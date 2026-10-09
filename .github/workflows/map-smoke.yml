@@ -14,6 +14,7 @@ on:
       - index.html
       - tests/smoke_map.cjs
       - tests/audit_kifisia.cjs
+      - tests/visual_regression.cjs
       - .github/workflows/map-smoke.yml
   workflow_dispatch:
 permissions:
@@ -37,6 +38,7 @@ jobs:
           sleep 2
           node tests/smoke_map.cjs
           node tests/visual_regression.cjs
+          node tests/audit_kifisia.cjs
       - name: Archive visual QA screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -44,4 +46,3 @@ jobs:
           name: athens-visual-qa
           path: qa-screenshots/*.jpg
           if-no-files-found: ignore
-          node tests/audit_kifisia.cjs
