@@ -1341,4 +1341,57 @@ repaint();
 })();
 </script>
 
+<script>
+(function(){
+"use strict";
+// Convert all 27 original Folium Bio cards into compact, readable DOM before first opening.
+// Original names, hours, streets, closure states and official source URLs are retained.
+const map=map_602b3e032ea0b867c861696733b322fa;
+const make=(tag,className,value)=>{
+ const el=document.createElement(tag);
+ if(className)el.className=className;
+ if(value!=null)el.textContent=value;
+ return el;
+};
+let converted=0;
+map.eachLayer(layer=>{
+ if(!(layer instanceof L.Marker)||!layer.getPopup)return;
+ const popup=layer.getPopup();
+ if(!popup)return;
+ const source=popup.getContent();
+ if(!(source instanceof HTMLElement)||!source.innerHTML.includes(" — Bio ("))return;
+ const raw=source.innerHTML;
+ const parsed=raw.match(/^(.+?) — Bio \((Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\)/);
+ const hours=raw.match(/Official hours \(Bioagores\): ([^<]+)/);
+ const location=raw.match(/Location: ([^<]+)/);
+ const closed=raw.includes("TEMPORARILY CLOSED");
+ const oldLink=source.querySelector('a[href^="https://www.bioagores.org/"]');
+ if(!parsed||(!closed&&(!hours||!location))||!oldLink)throw new Error("Bio market card source incomplete");
+ const card=make("article","market-popup bio");
+ card.append(make("div","kind","Bio organic · "+parsed[2]));
+ card.append(make("span","name",parsed[1]));
+ if(closed)card.append(make("div","closed","Temporarily closed"));
+ else{
+  card.append(make("div","hours",hours[1]));
+  const addr=make("div","street");
+  // Decode HTML entities from the original Folium source safely, without injecting HTML.
+  const decoder=document.createElement("textarea");
+  decoder.innerHTML=location[1];addr.textContent=decoder.value;
+  card.append(addr);
+ }
+ const details=make("details");
+ details.append(make("summary","","Source & location details"));
+ details.append(make("p","",closed
+  ?"Historical position is shown for reference; Bioagores lists this market as temporarily closed."
+  :"Position follows Bioagores' approximate map centre; the street description is authoritative."));
+ const link=document.createElement("a");
+ link.href=oldLink.href;link.target="_blank";link.rel="noopener noreferrer";
+ link.textContent="Bioagores · official listing ↗";
+ details.append(link);card.append(details);
+ popup.setContent(card);
+ converted++;
+});
+if(converted!==27)console.warn("Bio market card count changed:",converted);
+})();
+</script>
 </html>
