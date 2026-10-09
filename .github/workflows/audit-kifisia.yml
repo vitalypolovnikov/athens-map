@@ -1,0 +1,21 @@
+name: Audit Kifisia Bio
+on:
+  push:
+    branches: [audit/kifisia-bio-marker-2026-10-09]
+permissions:
+  contents: read
+jobs:
+  kifisia-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: |
+          npm install --no-save playwright@1.58.0
+          npx playwright install chromium
+      - run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/athens-audit-http.log 2>&1 &
+          sleep 2
+          node tests/audit_kifisia.cjs
