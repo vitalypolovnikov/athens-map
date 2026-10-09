@@ -1,5 +1,5 @@
 {
-  "utc": "2026-10-09T10:19:56.220863+00:00",
+  "utc": "2026-10-09T10:21:49.827337+00:00",
   "days": [
     {
       "day": "Δευτέρα",
@@ -29,6 +29,53 @@
         "art=&end=&order=&order_by=place&area=Αγία Βαρβάρα&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
         "t=&end=&order=&order_by=place&area=Αγία Παρασκευή&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
         "tart=&end=&order=&order_by=place&area=Άνω Πατήσια&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t"
+      ],
+      "numeric_geo_count": {
+        "37\\.\\d{4,}": 0,
+        "23\\.\\d{4,}": 0,
+        "38\\.\\d{4,}": 0,
+        "24\\.\\d{4,}": 0
+      },
+      "numeric_geo_contexts": [],
+      "keyword_contexts": {
+        "maptiler": [
+          "iv>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<ul class=\"pagination\" style=\"display:none\">\n\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<script src=\"https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js\"></script>\n<link href=\"https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.css\" rel=\"stylesheet\"/>\n<script>\n(function($) {\n\t$(document).ready(function() {\n\n \n\t\t$(\".onselect\").change(function(",
+          "iv>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<ul class=\"pagination\" style=\"display:none\">\n\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<script src=\"https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js\"></script>\n<link href=\"https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.css\" rel=\"stylesheet\"/>\n<script>\n(function($) {\n\t$(document).ready(function() {\n\n \n\t\t$(\".onselect\").change(function(e){\n\t\t\t//$(\"#",
+          "\t\t\t</div>\n\t\t\t\t\t\t\t\t<ul class=\"pagination\" style=\"display:none\">\n\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<script src=\"https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js\"></script>\n<link href=\"https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.css\" rel=\"stylesheet\"/>\n<script>\n(function($) {\n\t$(document).ready(function() {\n\n \n\t\t$(\".onselect\").change(function(e){\n\t\t\t//$(\"#form\").submit();\n\t\t});\n",
+          "e\">\n\t\t\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n<script src=\"https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js\"></script>\n<link href=\"https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.css\" rel=\"stylesheet\"/>\n<script>\n(function($) {\n\t$(document).ready(function() {\n\n \n\t\t$(\".onselect\").change(function(e){\n\t\t\t//$(\"#form\").submit();\n\t\t});\n\n\t\t$(\".onclick\").click(function(e){\n\t\t\t$(\"#form\").submit();"
+        ],
+        "mapid": [],
+        "map-box": [],
+        "latlng": [],
+        "markers": [],
+        "coordinates": [],
+        "geometry": [],
+        "features": [
+          "t;\r\n    text-align:center\r\n}\r\n</style><meta name=\"google-site-verification\" content=\"K81TO8x8pLGzJeOm2t96ZP6KT2WwDa5TOaVcIH2Xe6s\"><meta name=\"generator\" content=\"Elementor 3.25.4; features: e_font_icon_svg, additional_custom_breakpoints, e_optimized_control_loading; settings: css_print_method-internal, google_font-enabled, font_display-swap\">\n\t\t\t<style>\n\t\t\t\t.e-con.e-parent:nth-of-type(n+4):not(.e-lazyloaded):not(.e-no-lazyload),\n\t\t\t\t.e-",
+          "een\":{\"label\":\"Widescreen\",\"value\":2400,\"default_value\":2400,\"direction\":\"min\",\"is_enabled\":false}},\"hasCustomBreakpoints\":false},\"version\":\"3.25.4\",\"is_static\":false,\"experimentalFeatures\":{\"e_font_icon_svg\":true,\"additional_custom_breakpoints\":true,\"container\":true,\"e_swiper_latest\":true,\"e_nested_atomic_repeaters\":true,\"e_optimized_control_loading\":true,\"e_onboarding\":true,\"e_css_smooth_scroll\":true,\"theme_builder_v2\":true,\"home_scre"
+        ],
+        "data-coordinates": [],
+        "data-lat": [],
+        "<div id=\"map\"": [],
+        "market-list": []
+      },
+      "html_first_road": [
+        "ion=&type=&day=Δευτέρα&start=&end=&order=&order_by=place&view=map&cpage=1\"><i class=\"fas fa-list\" data-view=\"map\"></i> Χάρτης</a>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t<br><br>\n\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t \n\n\t\t\t\t\t\t\t\t\n\t\t\t\t<div class=\"market\">\n\t\t\t\t\t<div class=\"market-header\">\n\t\t\t\t\t\tΔήμος Αγίας Βαρβάρας \n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"market-body\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"background:#c1e0b1;color:black;padding:10px;\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-lg-9\">\n\t\t\t\t\t\t\t\t\tΠεριοχή: <strong>Αγία Βαρβάρα</strong>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-lg-3 text-right\">\n\t\t\t\t\t\t\t\t\t<a style=\"margin-right:15px\" href=\"?county=&municipality=&region=&type=&day=Δευτέρα&start=&end=&order=&order_by=place&area=Αγία Βαρβάρα&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"padding:10px\">Οδός <strong>Διάκου Αθανασίου</strong>\n\t\t\t\t\t\t<a href=\"/index.php/my-market?id=4\"><i class=\"fa fa-map-marker\"></i></a> \n\t\t\t\t\t\t\t\t\t\t\t\tαπό: <strong>Δευτέρα 24 Αυγούστου 2026</strong> μέχρι  <strong>Δευτέρα 21 Δεκεμβρίου 2026</strong>\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t<div class=\"market\">\n\t\t\t\t\t<div class=\"market-header\">\n\t\t\t\t\t\tΔήμος Αγίας Παρασκευής \n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"market-body\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"background:#c1e0b1;color:black;padding:10px;\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-lg-9\">\n\t\t\t\t\t\t\t\t\tΠεριοχή: <strong>Αγία Παρασκευή</strong>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-lg-3 text-right\">\n\t\t\t\t\t\t\t\t\t<a style=\"margin-right:15px\" href=\"?county=&municipality=&region=&type=&day=Δευτέρα&start=&end=&order=&order_by=place&area=Αγία Παρασκευή&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"padding:10px\">Οδός <strong>Σπάρτης</strong>\n\t\t\t\t\t\t<a href=\"/index.php/my-market?id=5\"><i class=\"fa fa-map-marker\"></i></a> \n\t\t\t\t\t\t\t\t\t\t\t\t(Μόνιμη, κάθε <strong>Δευτέρα</strong>)\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"padding:10px\">Οδός <strong>Μιαούλη</strong>\n\t\t\t\t\t\t<a href=\"/index.php/my-market?id=6\"><i class=\"fa fa-map-marker\"></i></a> \n\t\t\t\t\t\t\t\t\t\t\t\tαπό: <strong>Δευτέρα 7 Οκτωβρίου 2024</strong> μέχρι  <strong>Πέμπτη 31 Δεκεμβρίου 2026</strong>\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t<div class=\"market\">\n\t\t\t\t\t<div class=\"market-header\">\n\t\t\t\t\t\tΔήμος Αθηναίων \n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"market-body\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div ",
+        "ss=\"fa fa-map-marker\"></i></a> \n\t\t\t\t\t\t\t\t\t\t\t\tαπό: <strong>Δευτέρα 24 Αυγούστου 2026</strong> μέχρι  <strong>Δευτέρα 21 Δεκεμβρίου 2026</strong>\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t<div class=\"market\">\n\t\t\t\t\t<div class=\"market-header\">\n\t\t\t\t\t\tΔήμος Αγίας Παρασκευής \n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"market-body\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"background:#c1e0b1;color:black;padding:10px;\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-lg-9\">\n\t\t\t\t\t\t\t\t\tΠεριοχή: <strong>Αγία Παρασκευή</strong>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-lg-3 text-right\">\n\t\t\t\t\t\t\t\t\t<a style=\"margin-right:15px\" href=\"?county=&municipality=&region=&type=&day=Δευτέρα&start=&end=&order=&order_by=place&area=Αγία Παρασκευή&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"padding:10px\">Οδός <strong>Σπάρτης</strong>\n\t\t\t\t\t\t<a href=\"/index.php/my-market?id=5\"><i class=\"fa fa-map-marker\"></i></a> \n\t\t\t\t\t\t\t\t\t\t\t\t(Μόνιμη, κάθε <strong>Δευτέρα</strong>)\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"padding:10px\">Οδός <strong>Μιαούλη</strong>\n\t\t\t\t\t\t<a href=\"/index.php/my-market?id=6\"><i class=\"fa fa-map-marker\"></i></a> \n\t\t\t\t\t\t\t\t\t\t\t\tαπό: <strong>Δευτέρα 7 Οκτωβρίου 2024</strong> μέχρι  <strong>Πέμπτη 31 Δεκεμβρίου 2026</strong>\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\n\t\t\t\t<div class=\"market\">\n\t\t\t\t\t<div class=\"market-header\">\n\t\t\t\t\t\tΔήμος Αθηναίων \n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"market-body\">\n\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"background:#c1e0b1;color:black;padding:10px;\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-lg-9\">\n\t\t\t\t\t\t\t\t\tΠεριοχή: <strong>Άνω Πατήσια</strong>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-lg-3 text-right\">\n\t\t\t\t\t\t\t\t\t<a style=\"margin-right:15px\" href=\"?county=&municipality=&region=&type=&day=Δευτέρα&start=&end=&order=&order_by=place&area=Άνω Πατήσια&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"padding:10px\">Οδός <strong>Ιακωβίδου</strong>\n\t\t\t\t\t\t<a href=\"/index.php/my-market?id=16\"><i class=\"fa fa-map-marker\"></i></a> \n\t\t\t\t\t\t\t\t\t\t\t\tαπό: <strong>Δευτέρα 14 Σεπτεμβρίου 2026</strong> μέχρι  <strong>Δευτέρα 21 Ιουνίου 2027</strong>\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t\t\t\t\t\t<div style=\"background:#c1e0b1;color:black;padding:10px;\">\n\t\t\t\t\t\t\t<div class=\"row\">\n\t\t\t\t\t\t\t\t<div class=\"col-lg-9\">\n\t\t\t\t\t\t\t\t\tΠεριοχή: <strong>Δάφνη</strong>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t<div class=\"col-lg-3 tex"
+      ],
+      "inline_scripts": [
+        {
+          "length": 5702,
+          "head": "{\"@context\":\"https://schema.org\",\"@graph\":[{\"@type\":[\"Person\",\"Organization\"],\"@id\":\"https://www.foreaslaikon.gov.gr/#person\",\"name\":\"\\u03a6\\u03bf\\u03c1\\u03ad\\u03b1\\u03c2 \\u039b\\u03b5\\u03b9\\u03c4\\u03bf\\u03c5\\u03c1\\u03b3\\u03af\\u03b1\\u03c2 \\u039b\\u03b1\\u03ca\\u03ba\\u03ce\\u03bd \\u0391\\u03b3\\u03bf\\u03c1\\u03ce\\u03bd \\u03a0\\u03b5\\u03c1\\u03b9\\u03c6\\u03ad\\u03c1\\u03b5\\u03b9\\u03b1\\u03c2 \\u0391\\u03c4\\u03c4\\u0"
+        },
+        {
+          "length": 3262,
+          "head": "\n/* <![CDATA[ */\nwindow._wpemojiSettings = {\"baseUrl\":\"https:\\/\\/s.w.org\\/images\\/core\\/emoji\\/15.0.3\\/72x72\\/\",\"ext\":\".png\",\"svgUrl\":\"https:\\/\\/s.w.org\\/images\\/core\\/emoji\\/15.0.3\\/svg\\/\",\"svgExt\":\".svg\",\"source\":{\"concatemoji\":\"https:\\/\\/www.foreaslaikon.gov.gr\\/wp-includes\\/js\\/wp-emoji-release.min.js?ver=6.7.10\"}};\n/*! This file is auto-generated */\n!function(i,n){var o,s,e;function c(e){try{"
+        },
+        {
+          "length": 4278,
+          "head": "\n/* <![CDATA[ */\nvar elementorFrontendConfig = {\"environmentMode\":{\"edit\":false,\"wpPreview\":false,\"isScriptDebug\":false},\"i18n\":{\"shareOnFacebook\":\"M\\u03bf\\u03b9\\u03c1\\u03b1\\u03c3\\u03c4\\u03b5\\u03af\\u03c4\\u03b5 \\u03c3\\u03c4\\u03bf Facebook\",\"shareOnTwitter\":\"\\u039c\\u03bf\\u03b9\\u03c1\\u03b1\\u03c3\\u03c4\\u03b5\\u03af\\u03c4\\u03b5 \\u03c3\\u03c4\\u03bf Twitter\",\"pinIt\":\"\\u039a\\u03b1\\u03c1\\u03c6\\u03af\\u03c4\\u0"
+        }
       ]
     },
     {
@@ -65,7 +112,7 @@
       "day": "Τετάρτη",
       "url": "https://www.foreaslaikon.gov.gr/markets-map/?county=&cpage=1&day=%CE%A4%CE%B5%CF%84%CE%AC%CF%81%CF%84%CE%B7&view=list&region=&municipality=&type=&order_by=place",
       "status": 200,
-      "length": 192843,
+      "length": 192844,
       "counts": [
         "Βρέθηκαν 44 λαϊκές"
       ],
