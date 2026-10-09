@@ -52,6 +52,26 @@
 #athens-tools button{font:600 12px system-ui,-apple-system,sans-serif;white-space:nowrap;padding:5px 7px;border-radius:7px;border:1px solid #cbd5df;background:#f7f9fb;color:#284660;cursor:pointer}
 #athens-tools button.market-shortcut{border-color:#b5d4eb;background:#edf7ff;color:#15527e}
 #athens-tools .market-count{color:#627687;font-size:12px;margin-left:auto}
+#athens-tools .favorites-dropdown{position:relative;font-size:12px}
+#athens-tools .favorites-dropdown>summary{list-style:none;cursor:pointer;white-space:nowrap;background:#edf7ff;color:#15527e;border:1px solid #b5d4eb;border-radius:7px;padding:5px 8px;font-weight:650}
+#athens-tools .favorites-dropdown>summary::-webkit-details-marker{display:none}
+#athens-tools .favorites-dropdown>summary:after{content:" ▾";font-weight:400}
+#athens-tools .favorites-dropdown[open]>summary:after{content:" ▴"}
+#athens-tools .favorites-dropdown summary:focus-visible{outline:2px solid #176ba1;outline-offset:2px}
+#athens-tools .favorites-panel{position:absolute;top:calc(100% + 7px);right:0;z-index:1010;min-width:250px;max-width:min(350px,calc(100vw - 68px));width:max-content;max-height:min(55vh,380px);overflow:auto;background:#fff;border:1px solid #d3e0eb;border-radius:9px;box-shadow:0 6px 20px #0003;padding:7px}
+#athens-tools .favorites-item{display:flex;gap:5px;align-items:center;margin:1px 0;border-bottom:1px solid #eff2f6;padding:3px 0}
+#athens-tools .favorites-item:last-child{border-bottom:0}
+#athens-tools .favorites-item .fav-go{flex:1;text-align:left;white-space:normal;font-weight:600;line-height:1.25;color:#244966;background:transparent;border:0;min-width:0;overflow-wrap:anywhere}
+#athens-tools .favorites-item .fav-sub{display:block;font-size:10px;font-weight:400;color:#66778a;margin-top:2px}
+#athens-tools .favorites-item .fav-go:disabled{color:#71808d;cursor:not-allowed}
+#athens-tools .favorites-item .fav-remove{padding:4px 6px;background:transparent;border:0;font-size:16px;color:#ad792a}
+#athens-tools .favorites-hint{font-size:10px;color:#74808c;padding:5px 2px 1px}
+#athens-tools .favorites-empty{font-size:12px;color:#697989;padding:7px}
+.market-popup .fav-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.market-popup .fav-title-row .name{flex:1;min-width:0}
+.market-popup .fav-star{font:23px/1 system-ui,-apple-system,sans-serif;color:#ad792a;min-width:30px;min-height:29px;flex-shrink:0;border:1px solid #e1e6ea;border-radius:7px;background:#fbfcfd;cursor:pointer;padding:0 3px}
+.market-popup .fav-star:focus-visible{outline:2px solid #176ba1;outline-offset:2px}
+
 #athens-tools .meta{font-size:11px;color:#667889;margin-top:5px}
 #athens-tools .meta summary{cursor:pointer;width:max-content}
 #athens-tools .meta div{padding:5px 0}
@@ -73,6 +93,8 @@
 #athens-tools{left:56px;right:8px;top:8px;transform:none;width:auto;padding:7px 8px;font-size:12px}
 #athens-tools .head{gap:4px 6px}
 #athens-tools .head strong{font-size:14px}
+#athens-tools .favorites-dropdown>summary{padding:4px 6px;font-size:11px}
+#athens-tools .favorites-panel{position:fixed;left:56px;right:8px;top:var(--favorites-top,200px);max-width:none;min-width:0;width:auto;max-height:45vh}
 #athens-tools button{font-size:11px;padding:4px 6px}
 #athens-tools .filters{gap:4px 6px}
 #athens-tools select{max-width:110px;font-size:12px}
@@ -81,7 +103,7 @@
 }
 </style>
 <div id="athens-tools" role="region" aria-label="Athens market filters">
-<div class="head"><strong>Athens Markets</strong><button type="button" class="market-shortcut" id="focus-kifisia">📍 Kifisia · Kokkinara</button><button type="button" id="reset-athens">⌖ Athens</button></div>
+<div class="head"><strong>Athens Markets</strong><details class="favorites-dropdown" id="favorites-menu"><summary>★ Favorites <span id="favorites-count"></span></summary><div class="favorites-panel"><div id="favorites-items"></div><div class="favorites-hint" id="favorites-hint">Saved in this browser only.</div></div></details><button type="button" id="reset-athens">⌖ Athens</button></div>
 <div class="filters">
 <label>Type <select id="market-type"><option value="bio">Organic (Bio)</option><option value="all">All markets</option><option value="regular">Regular (official)</option></select></label>
 <label>Day <select id="market-day"><option value="all">Every day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
@@ -1246,6 +1268,7 @@ const data=[{"id":"4aa7822e03164be52ec907de692ccbcc","name":"Holargos","type":"r
 const m=map_602b3e032ea0b867c861696733b322fa;
 const type=document.getElementById("market-type"), day=document.getElementById("market-day"), closed=document.getElementById("show-closed"), count=document.getElementById("market-count");
 const all=data.filter(x=>x.type==="bio").map(x=>({ ...x, marker: window["marker_"+x.id] }));
+window.athensBioFavoritesRecords=data.filter(x=>x.type==="bio");
 // Top-level var declarations are globals in this original Folium page.
 function refresh(){let shown=0;for(const x of all){if(!x.marker)continue;const show=(type.value==="all"||type.value===x.type)&&(day.value==="all"||day.value===x.day)&&(closed.checked||!x.closed);if(show){if(!m.hasLayer(x.marker)) x.marker.addTo(m);shown++}else if(m.hasLayer(x.marker))m.removeLayer(x.marker);
 if(x.closed&&x.marker.setOpacity)x.marker.setOpacity(.37);
@@ -1308,6 +1331,8 @@ const markers=records.map(r=>{
   .bindPopup(html,{minWidth:210,maxWidth:330,autoPanPaddingTopLeft:[16,220],autoPanPaddingBottomRight:[16,16]});
  return {r,marker,valid};
 });
+window.athensOfficialMarketMarkers=markers;
+window.athensNextTradingDate=nextDateFor;
 function repaint(){
  let shown=0;
  for(const x of markers){
@@ -1323,16 +1348,6 @@ function repaint(){
 }
 type.addEventListener("change",repaint);
 day.addEventListener("change",repaint);
-document.getElementById("focus-kifisia").addEventListener("click",()=>{
- const k=window["marker_37c418631785bebb222eab0981187987"];
- if(!k)return;
- // Bring the favourite Bio market into view even from Regular/day-filter modes.
- type.value="bio";day.value="Monday";
- type.dispatchEvent(new Event("change"));
- day.dispatchEvent(new Event("change"));
- m.setView(k.getLatLng(),15,{animate:false});
- k.openPopup();
-});
 document.getElementById("reset-athens").addEventListener("click",()=>{
  m.closePopup();m.setView([37.995,23.79],11,{animate:false});
 });
@@ -1392,6 +1407,169 @@ map.eachLayer(layer=>{
  converted++;
 });
 if(converted!==27)console.warn("Bio market card count changed:",converted);
+})();
+</script>
+<script>
+(function(){
+"use strict";
+const map=window.map_602b3e032ea0b867c861696733b322fa;
+const keyName="athens-map:favorites:v1";
+const initialFavorite="bio:37c418631785bebb222eab0981187987";
+const menu=document.getElementById("favorites-menu");
+const count=document.getElementById("favorites-count");
+const list=document.getElementById("favorites-items");
+const hint=document.getElementById("favorites-hint");
+const type=document.getElementById("market-type");
+const day=document.getElementById("market-day");
+const showClosed=document.getElementById("show-closed");
+const registry=new Map();
+const keyByMarker=new WeakMap();
+const make=(name,css,value)=>{
+ const el=document.createElement(name);
+ if(css)el.className=css;
+ if(value!==undefined)el.textContent=value;
+ return el;
+};
+for(const rec of window.athensBioFavoritesRecords||[]){
+ const marker=window["marker_"+rec.id];
+ if(!marker||!marker.getPopup())continue;
+ const card=marker.getPopup().getContent();
+ const name=card?.querySelector(".name")?.textContent||rec.name;
+ const key="bio:"+rec.id;
+ const info={key,name,day:rec.day,type:"bio",marker,closed:rec.closed};
+ registry.set(key,info);keyByMarker.set(marker,info);
+}
+for(const item of window.athensOfficialMarketMarkers||[]){
+ const r=item.r;
+ const key="regular:"+r.id;
+ const info={key,name:r.area+" · "+r.street,day:r.weekday,type:"regular",marker:item.marker,record:r,closed:false};
+ registry.set(key,info);keyByMarker.set(item.marker,info);
+}
+function isScheduled(info){
+ if(info.type!=="regular")return true;
+ const r=info.record;
+ const date=window.athensNextTradingDate(r.weekday);
+ return (!r.start||r.start<=date)&&(!r.end||r.end>=date);
+}
+let canSave=true;
+let stored=null;
+try{stored=localStorage.getItem(keyName)}
+catch(_){canSave=false}
+let favorites;
+if(stored===null){
+ // Seed only for a new browser. An explicitly empty list stays empty.
+ favorites=registry.has(initialFavorite)?[initialFavorite]:[];
+}else{
+ try{
+  const decoded=JSON.parse(stored);
+  favorites=Array.isArray(decoded)?decoded.filter(x=>typeof x==="string"&&registry.has(x)):[];
+  favorites=[...new Set(favorites)];
+ }catch(_){favorites=[]}
+}
+function save(){
+ if(!canSave)return;
+ try{localStorage.setItem(keyName,JSON.stringify(favorites))}
+ catch(_){canSave=false}
+}
+if(stored===null)save();
+function drawStars(){
+ document.querySelectorAll(".fav-star[data-favorite-id]").forEach(button=>{
+  const id=button.dataset.favoriteId;
+  const chosen=favorites.includes(id);
+  button.textContent=chosen?"★":"☆";
+  button.setAttribute("aria-pressed",String(chosen));
+  button.setAttribute("aria-label",(chosen?"Remove ":"Add ")+(registry.get(id)?.name||"market")+(chosen?" from favorites":" to favorites"));
+  button.title=chosen?"Remove from Favorites":"Add to Favorites";
+ });
+}
+function toggleFavorite(id){
+ if(!registry.has(id))return;
+ favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
+ save();
+ renderFavorites();
+}
+function goToMarket(info){
+ if(!isScheduled(info))return;
+ type.value=info.type;
+ day.value=info.day;
+ if(info.closed)showClosed.checked=true;
+ // Both existing filter engines receive the updated selections.
+ type.dispatchEvent(new Event("change",{bubbles:true}));
+ day.dispatchEvent(new Event("change",{bubbles:true}));
+ if(info.closed)showClosed.dispatchEvent(new Event("change",{bubbles:true}));
+ if(!map.hasLayer(info.marker))return;
+ menu.open=false;
+ map.closePopup();
+ map.setView(info.marker.getLatLng(),info.type==="bio"?15:14,{animate:false});
+ info.marker.openPopup();
+}
+function renderFavorites(){
+ list.replaceChildren();
+ count.textContent=favorites.length?"("+favorites.length+")":"";
+ if(!favorites.length){
+  list.append(make("div","favorites-empty","No favorites yet. Open any market marker and tap ☆ to add one."));
+ }else{
+  for(const id of favorites){
+   const info=registry.get(id);
+   if(!info)continue;
+   const item=make("div","favorites-item");
+   const go=make("button","fav-go",info.name);
+   go.type="button";go.dataset.favoriteId=id;
+   const available=isScheduled(info);
+   const sub=make("span","fav-sub",info.type==="bio"?"Bio · "+info.day+(info.closed?" · temporarily closed":""):
+       "Regular · "+info.day+(available?"":" · not currently scheduled"));
+   go.append(sub);go.disabled=!available;
+   if(!available)go.title="This location is outside its official operating dates";
+   go.addEventListener("click",()=>goToMarket(info));
+   const remove=make("button","fav-remove","★");
+   remove.type="button";remove.dataset.removeFavorite=id;
+   remove.setAttribute("aria-label","Remove "+info.name+" from Favorites");
+   remove.title="Remove favorite";
+   remove.addEventListener("click",event=>{event.stopPropagation();toggleFavorite(id)});
+   item.append(go,remove);list.append(item);
+  }
+ }
+ hint.textContent=canSave?"Saved in this browser only.":"Storage unavailable; changes last only until this page is closed.";
+ drawStars();
+}
+function addPopupStar(marker){
+ const info=keyByMarker.get(marker);
+ if(!info)return;
+ const p=marker.getPopup();
+ const element=p?.getElement();
+ const card=element?.querySelector(".market-popup");
+ if(!card)return;
+ let button=card.querySelector(".fav-star");
+ if(!button){
+  const title=card.querySelector(".name");
+  if(!title)return;
+  const head=make("div","fav-title-row");
+  title.parentElement.insertBefore(head,title);
+  head.append(title);
+  button=make("button","fav-star","☆");
+  button.type="button";
+  button.dataset.favoriteId=info.key;
+  head.append(button);
+  button.addEventListener("click",event=>{
+   event.preventDefault();event.stopPropagation();
+   toggleFavorite(info.key);
+  });
+ }
+ drawStars();
+}
+map.on("popupopen",event=>addPopupStar(event.popup._source));
+function positionMobileMenu(){
+ if(window.innerWidth<=600){
+  const toolbar=document.getElementById("athens-tools").getBoundingClientRect();
+  menu.style.setProperty("--favorites-top",Math.ceil(toolbar.bottom+6)+"px");
+ }
+}
+menu.addEventListener("toggle",()=>{if(menu.open)positionMobileMenu()});
+window.addEventListener("resize",()=>{if(menu.open)positionMobileMenu()});
+document.addEventListener("pointerdown",event=>{
+ if(menu.open&&!menu.contains(event.target))menu.open=false;
+});
+renderFavorites();
 })();
 </script>
 </html>

@@ -31,7 +31,8 @@ const fs=require('node:fs');
   // day, map centre and readable popup, with no overlay obstruction.
   await page.locator('#market-type').selectOption('regular');
   await page.locator('#market-day').selectOption('Friday');
-  await page.locator('#focus-kifisia').click();
+  await page.locator('#favorites-menu > summary').click();
+  await page.locator('.fav-go[data-favorite-id="bio:37c418631785bebb222eab0981187987"]').click();
   await page.waitForTimeout(350);
   const shortcut=await page.evaluate(id=>{
    const map=window.map_602b3e032ea0b867c861696733b322fa;
