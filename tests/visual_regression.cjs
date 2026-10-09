@@ -17,7 +17,7 @@ const suite=async()=>{
    await page.goto(browserUrl,{waitUntil:'domcontentloaded',timeout:60000});
    await page.waitForFunction(()=>document.getElementById('market-count')?.textContent.includes('Bio'));
    const init=await page.evaluate(id=>{
-     const m=window[mapName], k=window['marker_'+id], popup=k.getPopup();
+     const m=window.map_602b3e032ea0b867c861696733b322fa, k=window['marker_'+id], popup=k.getPopup();
      const layerArray=[];m.eachLayer(l=>{if(l instanceof L.Marker&&l.getPopup)layerArray.push(l);});
      const cards=layerArray.filter(l=>l.getPopup()?.getContent()?.classList?.contains('market-popup'));
      return {zoom:m.getZoom(),isKifisiaInViewport:m.getBounds().contains(k.getLatLng()),bioCount:cards.length,correctKifisiaContent:popup.getContent().textContent.includes('Kokkinara'),dataPopupWidthType:typeof popup.options.maxWidth,panelHeight:document.getElementById('athens-tools').getBoundingClientRect().height};
@@ -31,7 +31,7 @@ const suite=async()=>{
    await page.locator('#focus-kifisia').click();
    await page.waitForTimeout(200);
    const k=await page.evaluate(id=>{
-     const m=window[mapName],mark=window['marker_'+id],p=mark.getPopup();
+     const m=window.map_602b3e032ea0b867c861696733b322fa,mark=window['marker_'+id],p=mark.getPopup();
      const outer=p.getElement().getBoundingClientRect(), panel=document.getElementById('athens-tools').getBoundingClientRect();
      const inner=p.getElement().querySelector('.leaflet-popup-content').getBoundingClientRect();
      return {visible:mark.isPopupOpen(),zoom:m.getZoom(),width:inner.width,height:inner.height,
@@ -54,12 +54,12 @@ const suite=async()=>{
    assert.equal(await page.locator('.leaflet-popup-content details').getAttribute('open'),'');
    assert((await page.locator('.leaflet-popup-content a[href*="bioagores.org"]').count())>0);
    await page.locator('#reset-athens').click();
-   const reset=await page.evaluate(()=>({zoom:window[mapName].getZoom(),center:window[mapName].getCenter(),popups:document.querySelectorAll('.leaflet-popup').length}));
+   const reset=await page.evaluate(()=>({zoom:window.map_602b3e032ea0b867c861696733b322fa.getZoom(),center:window.map_602b3e032ea0b867c861696733b322fa.getCenter(),popups:document.querySelectorAll('.leaflet-popup').length}));
    assert.equal(reset.zoom,11);
    assert.equal(reset.popups,0);
    // Exhaustive Bio card opening: all 27 including temporarily closed, not just the favourite.
    const allBio=await page.evaluate(()=>{
-     const map=window[mapName],res=[],errors=[];
+     const map=window.map_602b3e032ea0b867c861696733b322fa,res=[],errors=[];
      map.eachLayer(layer=>{
        if(!(layer instanceof L.Marker)||!layer.getPopup)return;
        const p=layer.getPopup(),content=p?.getContent();
@@ -83,7 +83,7 @@ const suite=async()=>{
    await page.locator('#market-day').selectOption('all');
    await page.waitForTimeout(100);
    const allRegular=await page.evaluate(()=>{
-      const map=window[mapName],res=[],errors=[];
+      const map=window.map_602b3e032ea0b867c861696733b322fa,res=[],errors=[];
       map.eachLayer(l=>{
         if(!(l instanceof L.CircleMarker)||!l.getPopup)return;
         const p=l.getPopup(),html=p?.getContent();
