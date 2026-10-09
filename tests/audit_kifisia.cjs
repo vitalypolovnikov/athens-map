@@ -28,7 +28,30 @@ const fs=require('node:fs');
     const map=window.map_602b3e032ea0b867c861696733b322fa;return {visible:map.hasLayer(window['marker_'+id]),count:document.getElementById('market-count').textContent};
   },id);
   assert.equal(after.visible,true);
+  // From any other market view, the shortcut must restore the correct layer,
+  // day, map centre and readable popup, with no overlay obstruction.
+  await page.locator('#market-type').selectOption('regular');
+  await page.locator('#market-day').selectOption('Friday');
+  await page.locator('#focus-kifisia').click();
+  await page.waitForTimeout(350);
+  const shortcut=await page.evaluate(id=>{
+   const map=window.map_602b3e032ea0b867c861696733b322fa;
+   const marker=window['marker_'+id], p=marker.getLatLng();
+   const popup=marker.getPopup().getElement();
+   const panel=document.getElementById('athens-tools');
+   const popupBox=popup.getBoundingClientRect(),panelBox=panel.getBoundingClientRect();
+   return {hasLayer:map.hasLayer(marker),inViewport:map.getBounds().contains(p),
+    isOpen:marker.isPopupOpen(),type:document.querySelector('#market-type').value,
+    day:document.querySelector('#market-day').value,popupTop:popupBox.top,
+    panelBottom:panelBox.bottom,point:[p.lat,p.lng],count:document.getElementById('market-count').textContent};
+  },id);
+  assert.equal(shortcut.hasLayer,true);
+  assert.equal(shortcut.inViewport,true);
+  assert.equal(shortcut.isOpen,true);
+  assert.equal(shortcut.type,'bio');assert.equal(shortcut.day,'Monday');
+  assert(shortcut.popupTop>=shortcut.panelBottom-2,'Popup obscured by controls');
   assert.equal(errors.length,0);
+  console.log(JSON.stringify({shortcut:vp.name,details:shortcut}));
   console.log(JSON.stringify({viewport:vp.name,kifisia:first,afterMonday:after,jsErrors:errors}));
   await page.close();
  }
