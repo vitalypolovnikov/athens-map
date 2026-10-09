@@ -1303,7 +1303,7 @@ document.getElementById("focus-kifisia").addEventListener("click",()=>{
  const popup=k.getPopup().getElement(), panel=document.getElementById("athens-tools");
  if(popup&&panel){
    const overlap=panel.getBoundingClientRect().bottom-popup.getBoundingClientRect().top;
-   if(overlap>0)m.panBy([0,-(overlap+18)],{animate:false});
+   if(overlap>0)m.panBy([0,overlap+18],{animate:false});
  }
 });
 document.getElementById("show-closed").addEventListener("change",repaint);
