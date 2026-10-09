@@ -25,7 +25,7 @@ if(!bridge||!status||!window.supabase?.createClient){
 const client=window.supabase.createClient("https://ctqiscyorobaoiamvswa.supabase.co","sb_publishable_hLR8Bv5jZHU8Bka17IeoDg_5mv_fC-W",{
  auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}
 });
-let active=null,channel=null,ready=false,flushing=false,initialized=false,epoch=0;
+let active=null,channel=null,ready=false,flushing=false,initialized=false,epoch=0,connectingUserId=null;
 let pending={};
 let pendingImport=[];
 let poll=null;
@@ -53,6 +53,7 @@ function refreshControls(){
    "Favorites are stored in this browser.";
 }
 function setOffline(error){
+ ready=false;
  console.warn("Athens Favorites cloud:",error);
  setStatus("Sync offline · local changes will retry");
  refreshControls();
@@ -77,7 +78,7 @@ async function fetchRemote(expectedEpoch=epoch){
  bridge.applyCloud([...selected]);
 }
 async function flush(){
- if(!active||flushing)return;
+ if(!active||!initialized||flushing)return;
  flushing=true;
  const generation=epoch;
  try{
@@ -121,16 +122,17 @@ function startRealtime(){
 }
 async function connect(session){
  if(!session?.user){
-  epoch++;ready=false;active=null;pending={};pendingImport=[];stopRealtime();
+  epoch++;ready=false;initialized=false;connectingUserId=null;active=null;pending={};pendingImport=[];stopRealtime();
   setStatus("Local favorites · sign in to sync Mac and iPhone");
   window.athensCloudLinked=false;refreshControls();
   return;
  }
- if(active?.id===session.user.id&&initialized)return;
+ if(active?.id===session.user.id&&(initialized||connectingUserId===session.user.id))return;
  epoch++;
  const currentEpoch=epoch;
  const before=bridge.getSelected();
  const user=session.user;
+ connectingUserId=user.id;
  active={id:user.id,email:user.email||"your account"};
  ready=false;initialized=false;pending=readPending(user.id);pendingImport=[];
  setStatus("Connecting to cloud…");
@@ -154,6 +156,7 @@ async function connect(session){
   if(Object.keys(pending).length)await flush();
   refreshStatus();
  }catch(error){setOffline(error.message||String(error))}
+ finally{if(epoch===currentEpoch)connectingUserId=null}
 }
 bridge.onLocalChange((key,selected)=>{
  if(!active)return;
@@ -201,9 +204,15 @@ signout.addEventListener("click",async()=>{
  }catch(error){setOffline(error.message||String(error))}
  finally{signout.disabled=false}
 });
-window.addEventListener("online",()=>{void flush();void refresh()});
+window.addEventListener("online",()=>{
+ if(active&&!initialized){void client.auth.getSession().then(({data})=>connect(data.session))}
+ else {void refresh()}
+});
 document.addEventListener("visibilitychange",()=>{
- if(document.visibilityState==="visible")void refresh();
+ if(document.visibilityState==="visible"){
+  if(active&&!initialized){void client.auth.getSession().then(({data})=>connect(data.session))}
+  else void refresh();
+ }
 });
 client.auth.onAuthStateChange((_event,session)=>{
  // Don't await Supabase calls inside auth-state callback.
