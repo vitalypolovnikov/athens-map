@@ -50,7 +50,8 @@ function refreshControls(){
  window.athensCloudLinked=signed&&ready;
  document.getElementById("favorites-hint").textContent=signed&&ready?
    "Cloud sync active · this browser keeps an offline copy.":
-   "Favorites are stored in this browser.";
+   (signed?"Cloud connection pending · local favorites remain available.":
+    "Favorites are stored in this browser until you sign in.");
 }
 function setOffline(error){
  ready=false;
