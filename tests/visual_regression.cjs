@@ -47,8 +47,6 @@ const suite=async()=>{
    assert(!k.moreOpen,'Technical details must be collapsed by default');
    if(v.name!=='small-mobile'){
      await page.screenshot({path:path.join(screenshots,v.name+'-kifisia.jpg'),type:'jpeg',quality:62,animations:'disabled'});
-     const bytes=await page.screenshot({type:'jpeg',quality:55,animations:'disabled'});
-     console.log('QA_IMAGE_'+v.name.toUpperCase()+':'+bytes.toString('base64'));
    }
    await page.locator('.leaflet-popup-content details summary').click();
    assert.equal(await page.locator('.leaflet-popup-content details').getAttribute('open'),'');
