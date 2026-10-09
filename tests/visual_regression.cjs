@@ -113,4 +113,4 @@ const suite=async()=>{
  await browser.close();
  console.log('VISUAL_QA_PASS:'+JSON.stringify(summaries));
 };
-suite().catch(e=>{console.error('VISUAL_QA_FAIL:',e);process.exitCode=1});
+suite().catch(e=>{console.error('VISUAL_QA_FAIL:',e);process.exit(1)});
