@@ -1,12 +1,5 @@
 name: Smoke-test Athens market map
 on:
-  push:
-    branches:
-      - revision/compact-popups-visual-qa-2026-10-09
-    paths:
-      - index.html
-      - tests/visual_regression.cjs
-      - .github/workflows/map-smoke.yml
   pull_request:
     branches:
       - main
