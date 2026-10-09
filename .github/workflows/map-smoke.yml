@@ -1,8 +1,8 @@
 name: Smoke-test Athens market map
 on:
-  push:
+  pull_request:
     branches:
-      - revision/official-regular-market-inventory-2026-10-09
+      - main
     paths:
       - index.html
       - tests/smoke_map.cjs
