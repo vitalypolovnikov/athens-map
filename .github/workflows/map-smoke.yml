@@ -5,6 +5,8 @@ on:
       - main
     paths:
       - index.html
+      - cloud-sync.js
+      - tests/cloud_sync.cjs
       - tests/smoke_map.cjs
       - tests/audit_kifisia.cjs
       - tests/visual_regression.cjs
@@ -34,6 +36,7 @@ jobs:
           node tests/visual_regression.cjs
           node tests/audit_kifisia.cjs
           node tests/favorites.cjs
+          node tests/cloud_sync.cjs
       - name: Archive visual QA screenshots
         if: always()
         uses: actions/upload-artifact@v4
