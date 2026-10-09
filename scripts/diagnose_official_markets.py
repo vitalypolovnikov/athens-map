@@ -19,6 +19,17 @@ for day in DAYS:
    row['numeric_geo_count']={p:len(re.findall(p,doc)) for p in [r'37\.\d{4,}',r'23\.\d{4,}',r'38\.\d{4,}',r'24\.\d{4,}']}
    row['numeric_geo_contexts']=[doc[max(0,m.start()-140):m.start()+220] for m in list(re.finditer(r'(?:37|38|23|24)\.\d{4,}',doc))[:30]]
    row['keyword_contexts']={q:[doc[max(0,m.start()-180):m.start()+260] for m in list(re.finditer(re.escape(q),doc,re.I))[:4]] for q in ['maptiler','mapid','map-box','latlng','markers','coordinates','geometry','features','data-coordinates','data-lat','<div id="map"','market-list']}
+   row['map_variants']=[]
+   for nexturl in [url.replace('view=list','view=map'),'https://www.foreaslaikon.gov.gr/index.php/my-market?id=4']:
+    v={'url':nexturl}
+    try:
+     with urllib.request.urlopen(urllib.request.Request(nexturl,headers={'User-Agent':'Mozilla/5.0'}),timeout=25) as resp: body=resp.read(2500000).decode('utf8','replace');v['status']=resp.status;v['final_url']=resp.url
+     v['length']=len(body)
+     v['geo_coords_count']=len(re.findall(r'(?:37|38)[.][0-9]{3,}',body))
+     v['numeric_contexts']=[body[max(0,m.start()-170):m.start()+220] for m in list(re.finditer(r'(?:37|38|23|24)[.][0-9]{4,}',body))[:10]]
+     v['map_js_contexts']=[body[max(0,m.start()-200):m.start()+500] for m in list(re.finditer('maptilersdk|new map|coordinates|latlng|\\.setLngLat|maplibregl|marker',body,re.I))[:8]]
+    except Exception as err:v['error']=str(err)[:220]
+    row['map_variants'].append(v)
    row['html_first_road']=[doc[max(0,m.start()-900):m.start()+1700] for m in list(re.finditer('Οδός',doc))[:2]]
    row['inline_scripts']=[{'length':len(x),'head':x[:400]} for x in re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',doc,re.I) if len(x)>3000][-5:]
 
