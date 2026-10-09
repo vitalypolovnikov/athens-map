@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 (async()=>{
  const html=fs.readFileSync('index.html','utf8');
- assert.equal((html.match(/ — Bio \(/g)||[]).length,27);
+ assert.equal((html.match(/<div id="html_[a-f0-9]+" style="width: 100.0%; height: 100.0%;">[^<]* — Bio \(/g)||[]).length,27);
  assert.equal((html.match(/Official hours \(Bioagores\):/g)||[]).length,25);
  assert.equal((html.match(/TEMPORARILY CLOSED — no trading hours/g)||[]).length,2);
  assert.equal((html.match(/Bioagores — official market page/g)||[]).length,27);
