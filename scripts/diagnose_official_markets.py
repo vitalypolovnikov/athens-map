@@ -19,6 +19,7 @@ for day in DAYS:
    row['numeric_geo_count']={p:len(re.findall(p,doc)) for p in [r'37\.\d{4,}',r'23\.\d{4,}',r'38\.\d{4,}',r'24\.\d{4,}']}
    row['numeric_geo_contexts']=[doc[max(0,m.start()-140):m.start()+220] for m in list(re.finditer(r'(?:37|38|23|24)\.\d{4,}',doc))[:30]]
    row['keyword_contexts']={q:[doc[max(0,m.start()-180):m.start()+260] for m in list(re.finditer(re.escape(q),doc,re.I))[:4]] for q in ['maptiler','mapid','map-box','latlng','markers','coordinates','geometry','features','data-coordinates','data-lat','<div id="map"','market-list']}
+   row['html_first_road']=[doc[max(0,m.start()-900):m.start()+1700] for m in list(re.finditer('Οδός',doc))[:2]]
    row['inline_scripts']=[{'length':len(x),'head':x[:400]} for x in re.findall(r'<script(?:\s[^>]*)?>([\s\S]*?)</script>',doc,re.I) if len(x)>3000][-5:]
 
  except Exception as exc:row['error']=str(exc)[:300]
