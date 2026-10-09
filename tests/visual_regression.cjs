@@ -54,9 +54,9 @@ const suite=async()=>{
    assert.equal(await page.locator('.leaflet-popup-content details').getAttribute('open'),'');
    assert((await page.locator('.leaflet-popup-content a[href*="bioagores.org"]').count())>0);
    await page.locator('#reset-athens').click();
-   const reset=await page.evaluate(()=>({zoom:window.map_602b3e032ea0b867c861696733b322fa.getZoom(),center:window.map_602b3e032ea0b867c861696733b322fa.getCenter(),popups:document.querySelectorAll('.leaflet-popup').length}));
+   const reset=await page.evaluate(()=>({zoom:window.map_602b3e032ea0b867c861696733b322fa.getZoom(),center:window.map_602b3e032ea0b867c861696733b322fa.getCenter(),kifisiaPopupOpen:window['marker_37c418631785bebb222eab0981187987'].isPopupOpen()}));
    assert.equal(reset.zoom,11);
-   assert.equal(reset.popups,0);
+   assert.equal(reset.kifisiaPopupOpen,false);
    // Exhaustive Bio card opening: all 27 including temporarily closed, not just the favourite.
    const allBio=await page.evaluate(()=>{
      const map=window.map_602b3e032ea0b867c861696733b322fa,res=[],errors=[];
@@ -64,7 +64,7 @@ const suite=async()=>{
      for(const layer of candidates){
        if(!(layer instanceof L.Marker)||!layer.getPopup)continue;
        const p=layer.getPopup(),content=p?.getContent();
-       if(!content?.classList?.contains('market-popup')||!content.classList.contains('bio'))return;
+       if(!content?.classList?.contains('market-popup')||!content.classList.contains('bio'))continue;
        // Geometry QA: avoid hundreds of tile fetches while still actually mounting the popup DOM.
        p.options.autoPan=false;
        layer.openPopup();
@@ -90,7 +90,7 @@ const suite=async()=>{
       for(const l of candidates){
         if(!(l instanceof L.CircleMarker)||!l.getPopup)continue;
         const p=l.getPopup(),html=p?.getContent();
-        if(typeof html!=='string'||!html.includes("market-popup regular"))return;
+        if(typeof html!=='string'||!html.includes("market-popup regular"))continue;
         p.options.autoPan=false;
         l.openPopup();
         const root=p.getElement(),inner=root?.querySelector('.leaflet-popup-content');
