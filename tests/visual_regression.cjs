@@ -64,7 +64,8 @@ const suite=async()=>{
        if(!(layer instanceof L.Marker)||!layer.getPopup)return;
        const p=layer.getPopup(),content=p?.getContent();
        if(!content?.classList?.contains('market-popup')||!content.classList.contains('bio'))return;
-       map.setView(layer.getLatLng(),13,{animate:false});
+       // Geometry QA: avoid hundreds of tile fetches while still actually mounting the popup DOM.
+       p.options.autoPan=false;
        layer.openPopup();
        const el=p.getElement(),rect=el.querySelector('.leaflet-popup-content').getBoundingClientRect();
        const detail=content.querySelector('details');
@@ -88,7 +89,7 @@ const suite=async()=>{
         if(!(l instanceof L.CircleMarker)||!l.getPopup)return;
         const p=l.getPopup(),html=p?.getContent();
         if(typeof html!=='string'||!html.includes("market-popup regular"))return;
-        map.setView(l.getLatLng(),13,{animate:false});
+        p.options.autoPan=false;
         l.openPopup();
         const root=p.getElement(),inner=root?.querySelector('.leaflet-popup-content');
         if(!inner){errors.push("missing DOM "+res.length);return}
