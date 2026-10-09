@@ -1297,14 +1297,12 @@ document.getElementById("focus-kifisia").addEventListener("click",()=>{
  type.value="bio";day.value="Monday";
  type.dispatchEvent(new Event("change"));
  day.dispatchEvent(new Event("change"));
+ // Folium's old maxWidth="100%" can produce an extremely tall, narrow popup.
+ const popup=k.getPopup();
+ popup.options.minWidth=Math.min(260,Math.max(190,window.innerWidth-100));
+ popup.options.maxWidth=340;
  m.setView(k.getLatLng(),15,{animate:false});
  k.openPopup();
- // Keep its popup below the filter panel on smaller screens.
- const popup=k.getPopup().getElement(), panel=document.getElementById("athens-tools");
- if(popup&&panel){
-   const overlap=panel.getBoundingClientRect().bottom-popup.getBoundingClientRect().top;
-   if(overlap>0)m.panBy([0,overlap+18],{animate:false});
- }
 });
 document.getElementById("show-closed").addEventListener("change",repaint);
 repaint();
