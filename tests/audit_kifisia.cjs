@@ -19,7 +19,6 @@ const fs=require('node:fs');
    const map=window.map_602b3e032ea0b867c861696733b322fa,m=window['marker_'+id];
    const p=m.getLatLng();return {inMap:map.hasLayer(m),withinInitialViewport:map.getBounds().contains(p),popup:(typeof m.getPopup().getContent()==='string'?m.getPopup().getContent():m.getPopup().getContent()?.outerHTML||String(m.getPopup().getContent())),point:[p.lat,p.lng],bounds:{north:map.getBounds().getNorth(),south:map.getBounds().getSouth(),east:map.getBounds().getEast(),west:map.getBounds().getWest()},count:document.getElementById('market-count').textContent};
   },id);
-  console.log(JSON.stringify({debug:vp.name,details:first}));
   assert.equal(first.inMap,true);assert(first.popup.includes('Kokkinara'));
   assert.deepEqual(first.point,[38.0813534,23.8307477]);
   await page.locator('#market-day').selectOption('Monday');
@@ -49,23 +48,9 @@ const fs=require('node:fs');
   assert.equal(shortcut.inViewport,true);
   assert.equal(shortcut.isOpen,true);
   assert.equal(shortcut.type,'bio');assert.equal(shortcut.day,'Monday');
-  console.log(JSON.stringify({shortcut:vp.name,details:shortcut}));
-  const motion=await page.evaluate(id=>{
-    const map=window.map_602b3e032ea0b867c861696733b322fa, marker=window['marker_'+id];
-    const pos=()=>{
-      const popup=marker.getPopup().getElement().getBoundingClientRect();
-      const icon=marker._icon.getBoundingClientRect();
-      return {popup:{top:popup.top,height:popup.height,bottom:popup.bottom},icon:{top:icon.top,height:icon.height},center:map.getCenter()};
-    };
-    const before=pos();
-    map.panBy([0,180],{animate:false});
-    const after=pos();
-    return {before,after};
-  },id);
-  console.log(JSON.stringify({motion:vp.name,details:motion}));
   assert(shortcut.popupTop>=shortcut.panelBottom-2,'Popup obscured by controls');
   assert.equal(errors.length,0);
-  console.log(JSON.stringify({viewport:vp.name,kifisia:first,afterMonday:after,jsErrors:errors}));
+  console.log(JSON.stringify({viewport:vp.name,initiallyOnScreen:first.withinInitialViewport,shortcutWorked:shortcut.inViewport,popupVisible:true,mondayCount:after.count,errors}));
   await page.close();
  }
  console.log(JSON.stringify({status:'PASS',individualHours:25,bio:27,closed:2}));
