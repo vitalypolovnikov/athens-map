@@ -28,7 +28,8 @@ const suite=async()=>{
    assert(init.panelHeight<220,'Initial toolbar is too tall: '+init.panelHeight);
    assert.equal(init.isKifisiaInViewport,true,'Kifisia must be in initial Athens viewport');
    // Open a Bio marker through a real user control and inspect actual rendered box.
-   await page.locator('#focus-kifisia').click();
+   await page.locator('#favorites-menu > summary').click();
+  await page.locator('.fav-go[data-favorite-id="bio:37c418631785bebb222eab0981187987"]').click();
    await page.waitForTimeout(200);
    const k=await page.evaluate(id=>{
      const m=window.map_602b3e032ea0b867c861696733b322fa,mark=window['marker_'+id],p=mark.getPopup();
