@@ -8,6 +8,7 @@ on:
       - tests/smoke_map.cjs
       - tests/audit_kifisia.cjs
       - tests/visual_regression.cjs
+      - tests/favorites.cjs
       - .github/workflows/map-smoke.yml
   workflow_dispatch:
 permissions:
@@ -32,6 +33,7 @@ jobs:
           node tests/smoke_map.cjs
           node tests/visual_regression.cjs
           node tests/audit_kifisia.cjs
+          node tests/favorites.cjs
       - name: Archive visual QA screenshots
         if: always()
         uses: actions/upload-artifact@v4
