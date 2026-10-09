@@ -1499,6 +1499,7 @@ function goToMarket(info){
  if(info.closed)showClosed.dispatchEvent(new Event("change",{bubbles:true}));
  if(!map.hasLayer(info.marker))return;
  menu.open=false;
+ map.closePopup();
  map.setView(info.marker.getLatLng(),info.type==="bio"?15:14,{animate:false});
  info.marker.openPopup();
 }
