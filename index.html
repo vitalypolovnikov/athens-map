@@ -1409,4 +1409,158 @@ map.eachLayer(layer=>{
 if(converted!==27)console.warn("Bio market card count changed:",converted);
 })();
 </script>
+<script>
+(function(){
+"use strict";
+const map=window.map_602b3e032ea0b867c861696733b322fa;
+const keyName="athens-map:favorites:v1";
+const initialFavorite="bio:37c418631785bebb222eab0981187987";
+const menu=document.getElementById("favorites-menu");
+const count=document.getElementById("favorites-count");
+const list=document.getElementById("favorites-items");
+const hint=document.getElementById("favorites-hint");
+const type=document.getElementById("market-type");
+const day=document.getElementById("market-day");
+const showClosed=document.getElementById("show-closed");
+const registry=new Map();
+const keyByMarker=new WeakMap();
+const make=(name,css,value)=>{
+ const el=document.createElement(name);
+ if(css)el.className=css;
+ if(value!==undefined)el.textContent=value;
+ return el;
+};
+for(const rec of window.athensBioFavoritesRecords||[]){
+ const marker=window["marker_"+rec.id];
+ if(!marker||!marker.getPopup())continue;
+ const card=marker.getPopup().getContent();
+ const name=card?.querySelector(".name")?.textContent||rec.name;
+ const key="bio:"+rec.id;
+ const info={key,name,day:rec.day,type:"bio",marker,closed:rec.closed};
+ registry.set(key,info);keyByMarker.set(marker,info);
+}
+for(const item of window.athensOfficialMarketMarkers||[]){
+ const r=item.r;
+ const key="regular:"+r.id;
+ const info={key,name:r.area+" · "+r.street,day:r.weekday,type:"regular",marker:item.marker,record:r,closed:false};
+ registry.set(key,info);keyByMarker.set(item.marker,info);
+}
+function isScheduled(info){
+ if(info.type!=="regular")return true;
+ const r=info.record;
+ const date=window.athensNextTradingDate(r.weekday);
+ return (!r.start||r.start<=date)&&(!r.end||r.end>=date);
+}
+let canSave=true;
+let stored=null;
+try{stored=localStorage.getItem(keyName)}
+catch(_){canSave=false}
+let favorites;
+if(stored===null){
+ // Seed only for a new browser. An explicitly empty list stays empty.
+ favorites=registry.has(initialFavorite)?[initialFavorite]:[];
+}else{
+ try{
+  const decoded=JSON.parse(stored);
+  favorites=Array.isArray(decoded)?decoded.filter(x=>typeof x==="string"&&registry.has(x)):[];
+  favorites=[...new Set(favorites)];
+ }catch(_){favorites=[]}
+}
+function save(){
+ if(!canSave)return;
+ try{localStorage.setItem(keyName,JSON.stringify(favorites))}
+ catch(_){canSave=false}
+}
+if(stored===null)save();
+function drawStars(){
+ document.querySelectorAll(".fav-star[data-favorite-id]").forEach(button=>{
+  const id=button.dataset.favoriteId;
+  const chosen=favorites.includes(id);
+  button.textContent=chosen?"★":"☆";
+  button.setAttribute("aria-pressed",String(chosen));
+  button.setAttribute("aria-label",(chosen?"Remove ":"Add ")+(registry.get(id)?.name||"market")+(chosen?" from favorites":" to favorites"));
+  button.title=chosen?"Remove from Favorites":"Add to Favorites";
+ });
+}
+function toggleFavorite(id){
+ if(!registry.has(id))return;
+ favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
+ save();
+ renderFavorites();
+}
+function goToMarket(info){
+ if(!isScheduled(info))return;
+ type.value=info.type;
+ day.value=info.day;
+ if(info.closed)showClosed.checked=true;
+ // Both existing filter engines receive the updated selections.
+ type.dispatchEvent(new Event("change",{bubbles:true}));
+ day.dispatchEvent(new Event("change",{bubbles:true}));
+ if(info.closed)showClosed.dispatchEvent(new Event("change",{bubbles:true}));
+ if(!map.hasLayer(info.marker))return;
+ menu.open=false;
+ map.setView(info.marker.getLatLng(),info.type==="bio"?15:14,{animate:false});
+ info.marker.openPopup();
+}
+function renderFavorites(){
+ list.replaceChildren();
+ count.textContent=favorites.length?"("+favorites.length+")":"";
+ if(!favorites.length){
+  list.append(make("div","favorites-empty","No favorites yet. Open any market marker and tap ☆ to add one."));
+ }else{
+  for(const id of favorites){
+   const info=registry.get(id);
+   if(!info)continue;
+   const item=make("div","favorites-item");
+   const go=make("button","fav-go",info.name);
+   go.type="button";go.dataset.favoriteId=id;
+   const available=isScheduled(info);
+   const sub=make("span","fav-sub",info.type==="bio"?"Bio · "+info.day+(info.closed?" · temporarily closed":""):
+       "Regular · "+info.day+(available?"":" · not currently scheduled"));
+   go.append(sub);go.disabled=!available;
+   if(!available)go.title="This location is outside its official operating dates";
+   go.addEventListener("click",()=>goToMarket(info));
+   const remove=make("button","fav-remove","★");
+   remove.type="button";remove.dataset.removeFavorite=id;
+   remove.setAttribute("aria-label","Remove "+info.name+" from Favorites");
+   remove.title="Remove favorite";
+   remove.addEventListener("click",event=>{event.stopPropagation();toggleFavorite(id)});
+   item.append(go,remove);list.append(item);
+  }
+ }
+ hint.textContent=canSave?"Saved in this browser only.":"Storage unavailable; changes last only until this page is closed.";
+ drawStars();
+}
+function addPopupStar(marker){
+ const info=keyByMarker.get(marker);
+ if(!info)return;
+ const p=marker.getPopup();
+ const element=p?.getElement();
+ const card=element?.querySelector(".market-popup");
+ if(!card)return;
+ let button=card.querySelector(".fav-star");
+ if(!button){
+  const title=card.querySelector(".name");
+  if(!title)return;
+  const head=make("div","fav-title-row");
+  title.parentElement.insertBefore(head,title);
+  head.append(title);
+  button=make("button","fav-star","☆");
+  button.type="button";
+  button.dataset.favoriteId=info.key;
+  head.append(button);
+  button.addEventListener("click",event=>{
+   event.preventDefault();event.stopPropagation();
+   toggleFavorite(info.key);
+  });
+ }
+ drawStars();
+}
+map.on("popupopen",event=>addPopupStar(event.popup._source));
+document.addEventListener("pointerdown",event=>{
+ if(menu.open&&!menu.contains(event.target))menu.open=false;
+});
+renderFavorites();
+})();
+</script>
 </html>
