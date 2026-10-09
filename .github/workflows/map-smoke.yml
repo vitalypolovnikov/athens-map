@@ -1,5 +1,12 @@
 name: Smoke-test Athens market map
 on:
+  push:
+    branches:
+      - revision/compact-popups-visual-qa-2026-10-09
+    paths:
+      - index.html
+      - tests/visual_regression.cjs
+      - .github/workflows/map-smoke.yml
   pull_request:
     branches:
       - main
@@ -29,4 +36,12 @@ jobs:
           python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/athens-map-http.log 2>&1 &
           sleep 2
           node tests/smoke_map.cjs
+          node tests/visual_regression.cjs
+      - name: Archive visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: athens-visual-qa
+          path: qa-screenshots/*.jpg
+          if-no-files-found: ignore
           node tests/audit_kifisia.cjs
