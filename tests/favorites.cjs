@@ -17,9 +17,9 @@ async function openBio(page,name){
   if(!rec)throw Error("Missing Bio "+target);
   const marker=window['marker_'+rec.id],map=window.map_602b3e032ea0b867c861696733b322fa;
   if(!map.hasLayer(marker))throw Error("Bio not in visible layer "+target);
-  map.setView(marker.getLatLng(),14,{animate:false});marker.openPopup();return 'bio:'+rec.id;
+  map.closePopup();map.setView(marker.getLatLng(),14,{animate:false});marker.openPopup();return 'bio:'+rec.id;
  },name);
- await page.locator('.leaflet-popup .fav-star').waitFor();
+ await page.locator('.leaflet-popup .fav-star[data-favorite-id="'+result+'"]').waitFor();
  return result;
 }
 async function openRegular(page){
@@ -29,10 +29,10 @@ async function openRegular(page){
   const map=window.map_602b3e032ea0b867c861696733b322fa;
   const item=window.athensOfficialMarketMarkers.find(x=>x.r.weekday==='Friday'&&map.hasLayer(x.marker));
   if(!item)throw Error('No official Friday market visible');
-  map.setView(item.marker.getLatLng(),14,{animate:false});item.marker.openPopup();
+  map.closePopup();map.setView(item.marker.getLatLng(),14,{animate:false});item.marker.openPopup();
   return {key:'regular:'+item.r.id,weekday:item.r.weekday};
  });
- await page.locator('.leaflet-popup .fav-star').waitFor();
+ await page.locator('.leaflet-popup .fav-star[data-favorite-id="'+market.key+'"]').waitFor();
  return market;
 }
 (async()=>{
@@ -54,9 +54,9 @@ async function openRegular(page){
   assert.equal(await page.locator('#market-type').inputValue(),'bio');
   assert.equal(await page.locator('#market-day').inputValue(),'Monday');
   assert.equal(await page.evaluate(()=>window['marker_37c418631785bebb222eab0981187987'].isPopupOpen()),true);
-  assert.equal(await page.locator('.leaflet-popup .fav-star').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('.leaflet-popup .fav-star[data-favorite-id="'+K+'"]').getAttribute('aria-pressed'),'true');
   // Removing the initial favorite is permanent, including when the array is empty.
-  await page.locator('.leaflet-popup .fav-star').click();
+  await page.locator('.leaflet-popup .fav-star[data-favorite-id="'+K+'"]').click();
   assert.deepEqual(await favs(page),[]);
   await page.reload({waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.querySelector('#favorites-menu'));
@@ -66,13 +66,13 @@ async function openRegular(page){
   await page.locator('#favorites-menu > summary').click();
   // Two independent Bio identities + one official regular market.
   await openBio(page,'Κηφισιά');
-  await page.locator('.leaflet-popup .fav-star').click();
+  await page.locator('.leaflet-popup .fav-star[data-favorite-id="'+K+'"]').click();
   await openBio(page,'Χαλάνδρι');
-  const otherBio=await page.locator('.leaflet-popup .fav-star').getAttribute('data-favorite-id');
+  const otherBio=await page.locator('.leaflet-popup .fav-star').last().getAttribute('data-favorite-id');
   assert(otherBio.startsWith('bio:')&&otherBio!==K);
-  await page.locator('.leaflet-popup .fav-star').click();
+  await page.locator('.leaflet-popup .fav-star[data-favorite-id="'+otherBio+'"]').click();
   const regular=await openRegular(page);
-  await page.locator('.leaflet-popup .fav-star').click();
+  await page.locator('.leaflet-popup .fav-star[data-favorite-id="'+regular.key+'"]').click();
   assert.deepEqual(await favs(page),[K,otherBio,regular.key]);
   await menu(page);
   assert.equal(await page.locator('.fav-go').count(),3);
@@ -83,7 +83,7 @@ async function openRegular(page){
   assert.equal(await page.locator('#market-type').inputValue(),'regular');
   assert.equal(await page.locator('#market-day').inputValue(),'Friday');
   assert(await page.locator('.leaflet-popup .market-popup.regular').isVisible());
-  assert.equal(await page.locator('.leaflet-popup .fav-star').getAttribute('aria-pressed'),'true');
+  assert.equal(await page.locator('.leaflet-popup .fav-star[data-favorite-id="'+regular.key+'"]').getAttribute('aria-pressed'),'true');
   // Stored IDs must survive refresh, including regular market identities.
   await page.reload({waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>document.querySelector('#favorites-menu'));
