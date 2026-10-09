@@ -42,21 +42,52 @@
         
 
 <style>
-#athens-tools{position:fixed;z-index:1001;top:12px;left:50%;transform:translateX(-50%);background:white;border-radius:12px;padding:10px 14px;box-shadow:0 2px 16px #0003;font:14px system-ui,sans-serif;max-width:calc(100vw - 30px);width:max-content}
-#athens-tools select,#athens-tools input{font:14px system-ui;margin:3px;padding:5px;border:1px solid #bbb;border-radius:5px}
-#athens-tools small{display:block;color:#555;padding:3px}
-#athens-tools .market-shortcut{font:inherit;font-weight:600;border:1px solid #a8c6dc;background:#edf7fe;color:#15527e;padding:4px 8px;border-radius:6px;cursor:pointer;margin-left:6px}
-#athens-tools .market-shortcut:focus-visible{outline:2px solid #15527e;outline-offset:2px}
-@media(max-width:600px){#athens-tools{top:9px;left:9px;transform:none;max-width:calc(100vw - 74px);font-size:12px;padding:6px}#athens-tools select,#athens-tools input{font-size:12px;max-width:120px}}
+#athens-tools{position:fixed;z-index:1001;top:10px;left:50%;transform:translateX(-50%);width:min(660px,calc(100vw - 100px));box-sizing:border-box;background:#fff;border:1px solid #dae3eb;border-radius:12px;padding:9px 12px;box-shadow:0 2px 15px #0002;font:13px/1.4 system-ui,-apple-system,sans-serif;color:#293746}
+#athens-tools .head,#athens-tools .filters{display:flex;flex-wrap:wrap;align-items:center;gap:6px 9px}
+#athens-tools .head{margin-bottom:6px}
+#athens-tools .head strong{font-size:15px;margin-right:auto}
+#athens-tools .filters label{display:inline-flex;align-items:center;gap:4px;margin:0;white-space:nowrap}
+#athens-tools select{font:inherit;padding:3px 5px;border:1px solid #cbd5df;border-radius:6px;max-width:150px}
+#athens-tools input[type=checkbox]{margin:0;accent-color:#3878a6}
+#athens-tools button{font:600 12px system-ui,-apple-system,sans-serif;white-space:nowrap;padding:5px 7px;border-radius:7px;border:1px solid #cbd5df;background:#f7f9fb;color:#284660;cursor:pointer}
+#athens-tools button.market-shortcut{border-color:#b5d4eb;background:#edf7ff;color:#15527e}
+#athens-tools .market-count{color:#627687;font-size:12px;margin-left:auto}
+#athens-tools .meta{font-size:11px;color:#667889;margin-top:5px}
+#athens-tools .meta summary{cursor:pointer;width:max-content}
+#athens-tools .meta div{padding:5px 0}
+#athens-tools a,.market-popup a{color:#16608c}
+#athens-tools button:focus-visible,#athens-tools select:focus-visible{outline:2px solid #176ba1}
+.leaflet-popup-content-wrapper{border-radius:11px!important}
+.leaflet-popup-content{width:min(300px,calc(100vw - 108px))!important;max-width:calc(100vw - 108px)!important;max-height:min(53vh,345px);overflow-x:hidden;overflow-y:auto;margin:11px 13px!important;font:13px/1.4 system-ui,-apple-system,sans-serif!important}
+.market-popup{width:100%;color:#273343;overflow-wrap:break-word}
+.market-popup .kind{font-size:11px;font-weight:650;text-transform:uppercase;letter-spacing:.04em;color:#617385}
+.market-popup .name{display:block;font-size:16px;font-weight:700;line-height:1.24;margin:2px 0 5px}
+.market-popup .hours{font-size:13px;font-weight:650;color:#156f54;margin-bottom:4px}
+.market-popup .closed{font-size:13px;font-weight:700;color:#aa4033;margin-bottom:5px}
+.market-popup .street{font-size:13px;line-height:1.38;margin-bottom:5px}
+.market-popup details{font-size:11px;color:#5a6979;border-top:1px solid #e6ecf2;margin-top:6px;padding-top:6px}
+.market-popup details summary{cursor:pointer;color:#17608b;font-weight:600}
+.market-popup details p{margin:6px 0}
+.market-popup details a{font-size:11px;text-decoration:underline}
+@media(max-width:600px){
+#athens-tools{left:56px;right:8px;top:8px;transform:none;width:auto;padding:7px 8px;font-size:12px}
+#athens-tools .head{gap:4px 6px}
+#athens-tools .head strong{font-size:14px}
+#athens-tools button{font-size:11px;padding:4px 6px}
+#athens-tools .filters{gap:4px 6px}
+#athens-tools select{max-width:110px;font-size:12px}
+#athens-tools .market-count{margin-left:0}
+.leaflet-popup-content{width:min(282px,calc(100vw - 94px))!important;max-width:calc(100vw - 94px)!important}
+}
 </style>
 <div id="athens-tools" role="region" aria-label="Athens market filters">
-<strong>Athens Markets</strong> <button type="button" class="market-shortcut" id="focus-kifisia" title="Locate the Monday organic market on Kokkinara Street">📍 Kifisia · Kokkinara</button> <small>Bioagores: 27 markets · Official Attica register: 264 geocoded listings (9 Oct 2026)</small>
+<div class="head"><strong>Athens Markets</strong><button type="button" class="market-shortcut" id="focus-kifisia">📍 Kifisia · Kokkinara</button><button type="button" id="reset-athens">⌖ Athens</button></div>
+<div class="filters">
 <label>Type <select id="market-type"><option value="bio">Organic (Bio)</option><option value="all">All markets</option><option value="regular">Regular (official)</option></select></label>
 <label>Day <select id="market-day"><option value="all">Every day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
-<label><input type="checkbox" id="show-closed" checked> Include temporarily closed</label>
-<small id="market-count" aria-live="polite"></small>
-<small><a href="https://www.bioagores.org/" target="_blank" rel="noopener">Bio official schedule ↗</a> · <a id="official-regular-day" href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Full current official regular-market register ↗</a></small>
-<small>Regular markers use official coordinates and their published validity dates. Verify later changes with the official register.</small>
+<label><input type="checkbox" id="show-closed" checked> Show closed</label>
+<span class="market-count" id="market-count" aria-live="polite"></span></div>
+<details class="meta"><summary>Sources · checked 9 Oct 2026</summary><div>Bio: <a href="https://www.bioagores.org/" target="_blank" rel="noopener">Bioagores ↗</a>. Regular: <a id="official-regular-day" href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">official Attica register ↗</a>. Snapshot: 27 Bio + 264 regular location records. Check current status before travel.</div></details>
 </div>
 </body>
 <script>
@@ -65,9 +96,9 @@
             var map_602b3e032ea0b867c861696733b322fa = L.map(
                 "map_602b3e032ea0b867c861696733b322fa",
                 {
-                    center: [37.9609, 23.7345],
+                    center: [37.995, 23.79],
                     crs: L.CRS.EPSG3857,
-                    zoom: 12,
+                    zoom: 11,
                     zoomControl: true,
                     preferCanvas: false,
                 }
@@ -95,7 +126,7 @@
             marker_4aa7822e03164be52ec907de692ccbcc.setIcon(icon_41e5e49b4abdd71146a05cf419a51a01);
         
     
-        var popup_0d00c431a89cd04b08c3cc64757e9e99 = L.popup({"maxWidth": "100%"});
+        var popup_0d00c431a89cd04b08c3cc64757e9e99 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_9cbb3f3f2de79849f49cf5dfbcbea525 = $(`<div id="html_9cbb3f3f2de79849f49cf5dfbcbea525" style="width: 100.0%; height: 100.0%;">Holargos — Regular (Monday)<br>Historical location: Syrou Street<br><strong style='color:#aa4400'>Warning: official Monday register says Aetideon Street, not the original Syrou Street. Pin NOT verified.</strong><br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -120,7 +151,7 @@
             marker_f69bf5553499ad5fb891f3ce117f2ca3.setIcon(icon_008b1de902d087267ab9b4ec1ef3f044);
         
     
-        var popup_2b2cde5960730a40ca8fe5bb81eb3497 = L.popup({"maxWidth": "100%"});
+        var popup_2b2cde5960730a40ca8fe5bb81eb3497 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_563507a52fd427156108c089d5b33ff5 = $(`<div id="html_563507a52fd427156108c089d5b33ff5" style="width: 100.0%; height: 100.0%;">Kifisia — Regular (Monday)<br>Historical location: 1st May Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Official register: 1st May Street, Kifisia workers&#39; housing (permanent Monday); marker remains legacy-positioned</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -145,7 +176,7 @@
             marker_a96c7e14892160602d77ccd6d95377c1.setIcon(icon_1af35627f901e695274c01c04bbf6000);
         
     
-        var popup_2f444aeb38c8ee8b5f00527d51759b68 = L.popup({"maxWidth": "100%"});
+        var popup_2f444aeb38c8ee8b5f00527d51759b68 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_2d841df8eec726994ccb62a183fcacda = $(`<div id="html_2d841df8eec726994ccb62a183fcacda" style="width: 100.0%; height: 100.0%;">Zografou — Regular (Monday)<br>Historical location: Giourgou Papandreou Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -170,7 +201,7 @@
             marker_4a2102a48b45647fe5cd5623bcafbc7f.setIcon(icon_a361227221791e6dd5f9a9ca82d43d56);
         
     
-        var popup_206a69243b1ffa518241bc709c6a8e53 = L.popup({"maxWidth": "100%"});
+        var popup_206a69243b1ffa518241bc709c6a8e53 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_27ef37393430df2a8f567cbe4ab9a706 = $(`<div id="html_27ef37393430df2a8f567cbe4ab9a706" style="width: 100.0%; height: 100.0%;">Alimos — Regular (Tuesday)<br>Historical location: Lisikratous Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -195,7 +226,7 @@
             marker_c58da35e576e16ba2cb9779cd27d7811.setIcon(icon_d640c55b79703d96f8c4c8de274382c1);
         
     
-        var popup_59e2bd1cde874255be33b4485c106f06 = L.popup({"maxWidth": "100%"});
+        var popup_59e2bd1cde874255be33b4485c106f06 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_b91f5b4a3a58aa36fe1147e045da8e7a = $(`<div id="html_b91f5b4a3a58aa36fe1147e045da8e7a" style="width: 100.0%; height: 100.0%;">Pagrati — Regular (Tuesday)<br>Historical location: Laertou &amp; Timotheos Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -220,7 +251,7 @@
             marker_a9133793e80f51fce664be452cfbfcb7.setIcon(icon_9af79f506363140cbfc2f895c2d98184);
         
     
-        var popup_96bcc47e20f3022fadbc11c326727e70 = L.popup({"maxWidth": "100%"});
+        var popup_96bcc47e20f3022fadbc11c326727e70 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_1ad93e341a558423995775b4565994ac = $(`<div id="html_1ad93e341a558423995775b4565994ac" style="width: 100.0%; height: 100.0%;">Kypseli — Regular (Tuesday)<br>Historical location: Sikinou Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -245,7 +276,7 @@
             marker_f7b64321f44bc1033f9cdc28ecbd00e3.setIcon(icon_585aace5da4d6692430f823e3bd198a9);
         
     
-        var popup_d16a6c35b918d68c75cc27c927c53320 = L.popup({"maxWidth": "100%"});
+        var popup_d16a6c35b918d68c75cc27c927c53320 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_61bc4e7bd0bc793218ba4f9d9b93a4dd = $(`<div id="html_61bc4e7bd0bc793218ba4f9d9b93a4dd" style="width: 100.0%; height: 100.0%;">Dafni — Regular (Wednesday)<br>Historical location: Eleftheriou Venizelou Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -270,7 +301,7 @@
             marker_a61a1da7c2281972722ca801629dce54.setIcon(icon_539a52632946db7416c7193b0872d0d9);
         
     
-        var popup_c2c4dee57ce0f6c80af68ef2f673f3a6 = L.popup({"maxWidth": "100%"});
+        var popup_c2c4dee57ce0f6c80af68ef2f673f3a6 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_b2b0fd155088b8b34af5995050e2cc00 = $(`<div id="html_b2b0fd155088b8b34af5995050e2cc00" style="width: 100.0%; height: 100.0%;">Nea Smyrni — Regular (Wednesday)<br>Historical location: Ellinospontou Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Official register: Ellispontou Street (permanent Wednesday); marker remains legacy-positioned</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -295,7 +326,7 @@
             marker_687e74f71dd252bcf6044556dacc84c1.setIcon(icon_c7f8144218abc24c7e2d9d7d4fab0f8b);
         
     
-        var popup_af881384a83d54a067823029ad590e18 = L.popup({"maxWidth": "100%"});
+        var popup_af881384a83d54a067823029ad590e18 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_ce6685d4194b885153105e6c8989e5c4 = $(`<div id="html_ce6685d4194b885153105e6c8989e5c4" style="width: 100.0%; height: 100.0%;">Kifisia — Regular (Wednesday)<br>Historical location: Bakogianni Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Official register: Pavlou Bakogianni Street (permanent Wednesday); marker remains legacy-positioned</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -320,7 +351,7 @@
             marker_89869f4b2a3c5445123591495679d1c2.setIcon(icon_3813ef645d5b2df368d4977891c79f0f);
         
     
-        var popup_5491654be702cbc31303a4e93a4e01b4 = L.popup({"maxWidth": "100%"});
+        var popup_5491654be702cbc31303a4e93a4e01b4 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_4e47af705de75199e3940531e91aced9 = $(`<div id="html_4e47af705de75199e3940531e91aced9" style="width: 100.0%; height: 100.0%;">Glyfada — Regular (Thursday)<br>Historical location: Agiou Gerasimou Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -345,7 +376,7 @@
             marker_754a712b44478686bbdeca7b902d51fb.setIcon(icon_3312449357157940adfac7f4a1f6bee5);
         
     
-        var popup_23857f325e59a225fa79c2bc76e4a89e = L.popup({"maxWidth": "100%"});
+        var popup_23857f325e59a225fa79c2bc76e4a89e = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_cdce20395d06da2816a81735d823c778 = $(`<div id="html_cdce20395d06da2816a81735d823c778" style="width: 100.0%; height: 100.0%;">Voula — Regular (Thursday)<br>Historical location: Metaxa Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -370,7 +401,7 @@
             marker_6da40334f852d95643ad276ab3ee82bd.setIcon(icon_d72bb2fcc689b2eb7187e02111c1efaf);
         
     
-        var popup_533ed93bbbe79b09bc94bda3c503994a = L.popup({"maxWidth": "100%"});
+        var popup_533ed93bbbe79b09bc94bda3c503994a = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_818483b2766a00877c51d3969c926918 = $(`<div id="html_818483b2766a00877c51d3969c926918" style="width: 100.0%; height: 100.0%;">Kypseli — Regular (Thursday)<br>Historical location: Tinou &amp; Sporadon Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -395,7 +426,7 @@
             marker_9c4f34854edff997e522563d26986423.setIcon(icon_a658dfb178470fd0996a689fedcbb893);
         
     
-        var popup_0b1bf12cb5d0efaf812766dcedd8d37f = L.popup({"maxWidth": "100%"});
+        var popup_0b1bf12cb5d0efaf812766dcedd8d37f = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_b7e509977486a6d17ca2d28042127fd8 = $(`<div id="html_b7e509977486a6d17ca2d28042127fd8" style="width: 100.0%; height: 100.0%;">Kolonaki — Regular (Friday)<br>Historical location: Xenokratous Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Official register: Xenokratous Street (permanent Friday); marker remains legacy-positioned</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -420,7 +451,7 @@
             marker_9163df79c4e1148acfcfdd3a9e4dd8a0.setIcon(icon_8721fee38bf465e673700d372f15c1f3);
         
     
-        var popup_38924c04101aab0d76b4421a3b3f603b = L.popup({"maxWidth": "100%"});
+        var popup_38924c04101aab0d76b4421a3b3f603b = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_37c487250416d80db9c019e20b1a553b = $(`<div id="html_37c487250416d80db9c019e20b1a553b" style="width: 100.0%; height: 100.0%;">Palaio Faliro — Regular (Friday)<br>Historical location: Chronopoulou Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -445,7 +476,7 @@
             marker_ca54ad616411b1eae1be633ead6402ab.setIcon(icon_58c0f7afafc669ecdf65c30775eb2a7d);
         
     
-        var popup_ee529e7578c08cea6ecbe3a789341f98 = L.popup({"maxWidth": "100%"});
+        var popup_ee529e7578c08cea6ecbe3a789341f98 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_976072e33cc5df9a6e4e9b193e6ba06b = $(`<div id="html_976072e33cc5df9a6e4e9b193e6ba06b" style="width: 100.0%; height: 100.0%;">Neo Iraklio — Regular (Friday)<br>Historical location: Kountouriotou Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -470,7 +501,7 @@
             marker_96f104817b5b18cacc8431de3b0f070a.setIcon(icon_ff7e0fecbf67687c91f79a69fd22d0b1);
         
     
-        var popup_46cba915d54a10045e15bf7d8ba0abcc = L.popup({"maxWidth": "100%"});
+        var popup_46cba915d54a10045e15bf7d8ba0abcc = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_cb4d39e65ec8858196caa87c5c0ac21f = $(`<div id="html_cb4d39e65ec8858196caa87c5c0ac21f" style="width: 100.0%; height: 100.0%;">Kallidromiou — Regular (Saturday)<br>Historical location: Kallidromiou Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Official register: Kallidromiou Street (permanent Saturday); marker remains legacy-positioned</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -495,7 +526,7 @@
             marker_34edc80040ffc11caa6e18383422a754.setIcon(icon_f31a82facad0f03633eaf0145f328bfa);
         
     
-        var popup_6fe26607c1f63019c8a4c09b26693635 = L.popup({"maxWidth": "100%"});
+        var popup_6fe26607c1f63019c8a4c09b26693635 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_9a166a8bbb612a9cff60e16ffadffbd0 = $(`<div id="html_9a166a8bbb612a9cff60e16ffadffbd0" style="width: 100.0%; height: 100.0%;">Vouliagmeni — Regular (Saturday)<br>Historical location: Thiseos Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Location and current operating status of this historical pin NOT reverified.</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -520,7 +551,7 @@
             marker_602ead6509641ee9148e4c4dbfbb79dc.setIcon(icon_ae9c26e194af16aa7707a3f713eeed92);
         
     
-        var popup_c676abec2f2196fb8157fdd9efcb38a8 = L.popup({"maxWidth": "100%"});
+        var popup_c676abec2f2196fb8157fdd9efcb38a8 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_feb36b30c88b7fe45ad961207ed2e54b = $(`<div id="html_feb36b30c88b7fe45ad961207ed2e54b" style="width: 100.0%; height: 100.0%;">Neos Kosmos — Regular (Saturday)<br>Historical location: Mitrou Sarkoudinou Street<br><strong>Official general selling hours: 07:30–15:30</strong><br><small>Not an individually verified schedule. Official register: Mitrou Sarkoudinou Street (permanent Saturday); marker remains legacy-positioned</small><br><a href="https://www.foreaslaikon.gov.gr/markets-map/" target="_blank" rel="noopener">Check live official regular-market register ↗</a><br><a href="https://www.foreaslaikon.gov.gr/faq/" target="_blank" rel="noopener">Official general market hours ↗</a></div>`)[0];
@@ -545,7 +576,7 @@
             marker_d22016517279c554a098ad1978a1b411.setIcon(icon_d7e893c4886fb5be521dcd16a76479b2);
         
     
-        var popup_8fda387fb9c491d502b4aec145871781 = L.popup({"maxWidth": "100%"});
+        var popup_8fda387fb9c491d502b4aec145871781 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_f9a3c220682234b7684776c2aa6dd5cd = $(`<div id="html_f9a3c220682234b7684776c2aa6dd5cd" style="width: 100.0%; height: 100.0%;">Ελληνικό — Bio (Monday)<br><strong style="color:#a32929">TEMPORARILY CLOSED — no trading hours</strong><br><small>Original historical position retained; not an active market.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/δευτέρα/ελληνικό/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -570,7 +601,7 @@
             marker_37c418631785bebb222eab0981187987.setIcon(icon_746bc96d1158b3f744a9c47b72dca50f);
         
     
-        var popup_b29e502aeb117fd3766c514de37084a4 = L.popup({"maxWidth": "100%"});
+        var popup_b29e502aeb117fd3766c514de37084a4 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_53882266f85fb1a247c81f16d024dfef = $(`<div id="html_53882266f85fb1a247c81f16d024dfef" style="width: 100.0%; height: 100.0%;">Κηφισιά — Bio (Monday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Kokkinara Street, between K. Karamanli and Panagias Eleftherotrias (Politia)<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/δευτέρα/κηφισιά/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -595,7 +626,7 @@
             marker_22864c25e697c02c21972ce2aeec067d.setIcon(icon_b89548c1d6bafa51f7866fcbc3cde14f);
         
     
-        var popup_80f5b0e4872c081919c4a9cecdf198a7 = L.popup({"maxWidth": "100%"});
+        var popup_80f5b0e4872c081919c4a9cecdf198a7 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_93d8f12db55eac7576d10dd5fd010b5f = $(`<div id="html_93d8f12db55eac7576d10dd5fd010b5f" style="width: 100.0%; height: 100.0%;">Νέα Σμύρνη — Bio (Monday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Syngrou Avenue 221 service road, outside Iosifogleio<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/δευτέρα/νέα-σμύρνη/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -620,7 +651,7 @@
             marker_c70be5edd61095328bf7d68438b7e3d8.setIcon(icon_59f37c677240f660b418f3b3235a813b);
         
     
-        var popup_ae9df615dff3c33c9d9e24d319337ca2 = L.popup({"maxWidth": "100%"});
+        var popup_ae9df615dff3c33c9d9e24d319337ca2 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_3c9c92517042350624a601fbd1193570 = $(`<div id="html_3c9c92517042350624a601fbd1193570" style="width: 100.0%; height: 100.0%;">Περιστέρι — Bio (Monday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Parou &amp; Dimosthenous, beside the playground<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/δευτέρα/περιστέρι/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -645,7 +676,7 @@
             marker_28f4406fd43eb7f950aab7f9479ec07e.setIcon(icon_e95835a3d37a490d2359acd3b19f1e45);
         
     
-        var popup_5d2bdd511d23e70a153ff167dc8ddf12 = L.popup({"maxWidth": "100%"});
+        var popup_5d2bdd511d23e70a153ff167dc8ddf12 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_d398efd5da4390e0e97f464e2f4730dd = $(`<div id="html_d398efd5da4390e0e97f464e2f4730dd" style="width: 100.0%; height: 100.0%;">Χαΐδάρι — Bio (Monday)<br><strong>Official hours (Bioagores): 14:00–17:30</strong><br>Location: Filopappou Street, behind the new Haidari town hall<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/δευτέρα/χαϊδάρι/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -670,7 +701,7 @@
             marker_c8f8e37f6a4fbd35c5d972736331ab7f.setIcon(icon_e0aafbd7a0701551a6a9d5dae7798a4d);
         
     
-        var popup_2cc91629a2cb63e75ef148f24233bf3d = L.popup({"maxWidth": "100%"});
+        var popup_2cc91629a2cb63e75ef148f24233bf3d = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_dbbb466a6466e999c2dbce0cb09a8b58 = $(`<div id="html_dbbb466a6466e999c2dbce0cb09a8b58" style="width: 100.0%; height: 100.0%;">Νέο Ηράκλειο — Bio (Tuesday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Papaioannou Street, from Tsiklitira to Zalokosta (2026 relocation)<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/τρίτη/νέο-ηράκλειο/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -695,7 +726,7 @@
             marker_c54cbab70b1cf2c05cd29dcae969b557.setIcon(icon_c284c8dff93c66e73d6117e0378f2336);
         
     
-        var popup_56902b18ec62f3e22524ec940fce92b1 = L.popup({"maxWidth": "100%"});
+        var popup_56902b18ec62f3e22524ec940fce92b1 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_bbe0b01f613f3b0e475f3edf26d617be = $(`<div id="html_bbe0b01f613f3b0e475f3edf26d617be" style="width: 100.0%; height: 100.0%;">Παλαιό Ψυχικό — Bio (Tuesday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Prigkipissis Elenis &amp; Stratigou Kallari, beside Arsakeio / Psychiko park<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/τρίτη/παλαιό-ψυχικό/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -720,7 +751,7 @@
             marker_29c1512cb8ca2cd6fdcd110391bb2ca9.setIcon(icon_ff10d4991b4d0dd65c6b68b878102bf6);
         
     
-        var popup_8c1c68cf77800ad4f1adccb51d9ab595 = L.popup({"maxWidth": "100%"});
+        var popup_8c1c68cf77800ad4f1adccb51d9ab595 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_b5b6d35347fa85fae934e0b16efbbc30 = $(`<div id="html_b5b6d35347fa85fae934e0b16efbbc30" style="width: 100.0%; height: 100.0%;">Νίκαια — Bio (Tuesday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Thivon 243, Manos Loizos Cultural Centre courtyard<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/τρίτη/νίκαια/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -745,7 +776,7 @@
             marker_b198d7837dda30f443acecdd000736de.setIcon(icon_ae0c5d437396b4f12dd7498f6f91c72e);
         
     
-        var popup_59b11480e71f3e5944772ebfe50e792a = L.popup({"maxWidth": "100%"});
+        var popup_59b11480e71f3e5944772ebfe50e792a = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_27dbf79c798da1d41bbcda46bb4b29e0 = $(`<div id="html_27dbf79c798da1d41bbcda46bb4b29e0" style="width: 100.0%; height: 100.0%;">Γλυφάδα — Bio (Wednesday)<br><strong style="color:#a32929">TEMPORARILY CLOSED — no trading hours</strong><br><small>Original historical position retained; not an active market.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/τετάρτη/γλυφάδα/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -770,7 +801,7 @@
             marker_5dd5f8c3074df59c72a95bdf0460580f.setIcon(icon_7685d02ddd54b145b9742b19c5a0d6e1);
         
     
-        var popup_eb0fa6a2cf621c4acc59e5b700ef182c = L.popup({"maxWidth": "100%"});
+        var popup_eb0fa6a2cf621c4acc59e5b700ef182c = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_7f35391a651777b7e4d22757d87d0126 = $(`<div id="html_7f35391a651777b7e4d22757d87d0126" style="width: 100.0%; height: 100.0%;">Ηλιούπολη — Bio (Wednesday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Plot opposite Palaion Patron Germanou Square (IKA Square)<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/τετάρτη/ηλιούπολη/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -795,7 +826,7 @@
             marker_16db55ad91c2c5dcdf07b45076f4250a.setIcon(icon_833a22516ffcb73b4f080146164bbecc);
         
     
-        var popup_707048e66343f37dba79d59adff9cb2a = L.popup({"maxWidth": "100%"});
+        var popup_707048e66343f37dba79d59adff9cb2a = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_f1dfd0efddf3e1088ca5e3b2193da3fe = $(`<div id="html_f1dfd0efddf3e1088ca5e3b2193da3fe" style="width: 100.0%; height: 100.0%;">Πειραιάς — Bio (Wednesday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Pygadas Square, Theotoki Street<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/τετάρτη/πειραιάς/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -820,7 +851,7 @@
             marker_ec0c773ac424894409cb41be51a9c42f.setIcon(icon_1ac0bb6ef3c2e8f150a1bde9876fe939);
         
     
-        var popup_0cc0dbe21d9a341f3c3e1a9944256a92 = L.popup({"maxWidth": "100%"});
+        var popup_0cc0dbe21d9a341f3c3e1a9944256a92 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_84181c866ac9bbaecab5fbe87436e222 = $(`<div id="html_84181c866ac9bbaecab5fbe87436e222" style="width: 100.0%; height: 100.0%;">Φιλοθέη — Bio (Wednesday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Stratigou Venteri &amp; Agias Filotheis<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/τετάρτη/φιλοθέη/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -845,7 +876,7 @@
             marker_31b0334ece3e006528c637cf9cfe4553.setIcon(icon_ebb496b6d1a85401bf25468089052521);
         
     
-        var popup_493dae8326e2f4a97012c2ac4790f527 = L.popup({"maxWidth": "100%"});
+        var popup_493dae8326e2f4a97012c2ac4790f527 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_779ca017e09bfbce7bd5d62a0f2aee92 = $(`<div id="html_779ca017e09bfbce7bd5d62a0f2aee92" style="width: 100.0%; height: 100.0%;">Χαλάνδρι — Bio (Wednesday)<br><strong>Official hours (Bioagores): 13:00–17:30</strong><br>Location: Tymfristou &amp; Ioanninon, at the square<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/τετάρτη/χαλάνδρι/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -870,7 +901,7 @@
             marker_426fa1b62bd62f2edcfd05e15f61eeef.setIcon(icon_deaa51e25d2845c6259ef6a8560302a0);
         
     
-        var popup_cd78dee5dc361e8b322d635a8d308eaa = L.popup({"maxWidth": "100%"});
+        var popup_cd78dee5dc361e8b322d635a8d308eaa = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_eedec135f726b7a2408e70de09d9e85e = $(`<div id="html_eedec135f726b7a2408e70de09d9e85e" style="width: 100.0%; height: 100.0%;">Γέρακας — Bio (Thursday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Ethnikis Antistaseos &amp; Mavrovouniotou<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/πέμπτη/γέρακας/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -895,7 +926,7 @@
             marker_8e054620048c65542c2dd4ef183f57bb.setIcon(icon_498817fd521517ccaec23940e0b14f02);
         
     
-        var popup_d0b65297d6c76b0b53b77714cc62aab3 = L.popup({"maxWidth": "100%"});
+        var popup_d0b65297d6c76b0b53b77714cc62aab3 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_1d45063cc827ce82d4896fdfcd2dc7d5 = $(`<div id="html_1d45063cc827ce82d4896fdfcd2dc7d5" style="width: 100.0%; height: 100.0%;">Θρακομακεδόνες — Bio (Thursday)<br><strong>Official hours (Bioagores): 13:00–17:30</strong><br>Location: Zafeiraki &amp; Makedonomachon, Albanella Square<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/πέμπτη/θρακομακεδόνες/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -920,7 +951,7 @@
             marker_89287d6bdef463166953568b47b82899.setIcon(icon_279ab8a0b64d71f392f79c9a9f987ef2);
         
     
-        var popup_aba91a7824d055e4aa97ced19ba7f1be = L.popup({"maxWidth": "100%"});
+        var popup_aba91a7824d055e4aa97ced19ba7f1be = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_17f54fabe1be2d43dfb480d9ad21eaef = $(`<div id="html_17f54fabe1be2d43dfb480d9ad21eaef" style="width: 100.0%; height: 100.0%;">Παλαιό Φάληρο — Bio (Thursday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Outside Resteio Swimming Centre towards Tae Kwon Do parking<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/πέμπτη/παλαιό-φάληρο/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -945,7 +976,7 @@
             marker_73f3efca39cde48effad89f84a886c81.setIcon(icon_019ac79711d163e4c7c1af0a0a73b26f);
         
     
-        var popup_04a3fb609c3aa464e0d80fe4da1a9b2e = L.popup({"maxWidth": "100%"});
+        var popup_04a3fb609c3aa464e0d80fe4da1a9b2e = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_0722e96bb6270d8bd4122884b0e5ddc2 = $(`<div id="html_0722e96bb6270d8bd4122884b0e5ddc2" style="width: 100.0%; height: 100.0%;">Πετρούπολη — Bio (Thursday)<br><strong>Official hours (Bioagores): 14:00–17:30</strong><br>Location: Kritis &amp; Dodekanisou, Botanical Garden entrance<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/πέμπτη/πετρούπολη/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -970,7 +1001,7 @@
             marker_d34bc88216ba4d0d7429b31e9550c60c.setIcon(icon_46051699506dc7443a60982f06dbff9c);
         
     
-        var popup_d39a2d28e60324c1d340b5a724fb0be6 = L.popup({"maxWidth": "100%"});
+        var popup_d39a2d28e60324c1d340b5a724fb0be6 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_eff9098f0639713c60c95b7fba62911a = $(`<div id="html_eff9098f0639713c60c95b7fba62911a" style="width: 100.0%; height: 100.0%;">Κορυδαλλός — Bio (Thursday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Eleftheriou Venizelou Square<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/πέμπτη/κορυδαλλός/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -995,7 +1026,7 @@
             marker_f60e5f6ce6459acb2b35d889cf500ac6.setIcon(icon_bd84c76929fbd8ca4c89475debda4a08);
         
     
-        var popup_6bf49a8106ac3b9a147b14da23ca5234 = L.popup({"maxWidth": "100%"});
+        var popup_6bf49a8106ac3b9a147b14da23ca5234 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_b19733afa369acc9de5284217ce4a7a2 = $(`<div id="html_b19733afa369acc9de5284217ce4a7a2" style="width: 100.0%; height: 100.0%;">Αγία Βαρβάρα — Bio (Friday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Ermou pedestrian street, behind Agia Eleousa Church (2026 relocation)<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/παρασκευή/αγία-βαρβάρα/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -1020,7 +1051,7 @@
             marker_6e0487276ab0ae4e2b37ac9d03b645a7.setIcon(icon_48dff4c8acab60f9b48e339741a2655a);
         
     
-        var popup_a39d5f5c1de50d976e37eba4e2a525e9 = L.popup({"maxWidth": "100%"});
+        var popup_a39d5f5c1de50d976e37eba4e2a525e9 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_c6a3510459880468719c6bb90c878e17 = $(`<div id="html_c6a3510459880468719c6bb90c878e17" style="width: 100.0%; height: 100.0%;">Αργυρούπολη — Bio (Friday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Kyprou Avenue &amp; Laskareos, municipal parking<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/παρασκευή/αργυρούπολη/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -1045,7 +1076,7 @@
             marker_ed85bf582f38fb8ad2f7e1880b90d8c2.setIcon(icon_1668c165f9681385e0d0ef8fad12d3ef);
         
     
-        var popup_f0016ae6de696168bab41905f8453a58 = L.popup({"maxWidth": "100%"});
+        var popup_f0016ae6de696168bab41905f8453a58 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_2bb4f46abd1ab566eb72b8e934dd6b6e = $(`<div id="html_2bb4f46abd1ab566eb72b8e934dd6b6e" style="width: 100.0%; height: 100.0%;">Καισαριανή — Bio (Friday)<br><strong>Official hours (Bioagores): 14:00–18:00</strong><br>Location: Solomonidou &amp; Filadelfeias, behind Near East stadium<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/παρασκευή/καισαριανή/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -1070,7 +1101,7 @@
             marker_e0fb6e85dbcfd23a1a19f3ed89154357.setIcon(icon_2e5db68732888e582edecab95a9c6593);
         
     
-        var popup_98851b7f9757c1bfaa9971f38093b50c = L.popup({"maxWidth": "100%"});
+        var popup_98851b7f9757c1bfaa9971f38093b50c = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_cdf600bfcc3e67dcad7f2382e8aad9d2 = $(`<div id="html_cdf600bfcc3e67dcad7f2382e8aad9d2" style="width: 100.0%; height: 100.0%;">Νέα Ιωνία — Bio (Friday)<br><strong>Official hours (Bioagores): 13:30–17:30</strong><br>Location: Patriarchou Ioakeim 4, beside Nea Ionia KEP<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/παρασκευή/νέα-ιωνία/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -1095,7 +1126,7 @@
             marker_36983c45a0be846a8bf153ebab739ff8.setIcon(icon_5f146e35455d0e369f2903b43df90955);
         
     
-        var popup_9258b1edb85065d021ced7e1e19c2eba = L.popup({"maxWidth": "100%"});
+        var popup_9258b1edb85065d021ced7e1e19c2eba = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_8513c2733bb429e381ee110f9826c5bc = $(`<div id="html_8513c2733bb429e381ee110f9826c5bc" style="width: 100.0%; height: 100.0%;">Χολαργός — Bio (Friday)<br><strong>Official hours (Bioagores): 15:00–18:30</strong><br>Location: Syrou Street, beside Papagou–Cholargou Town Hall<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/παρασκευή/χολαργός/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -1120,7 +1151,7 @@
             marker_ec7cb9238c68f97656ef699931acab20.setIcon(icon_ca22924eb5e66de0951a10265dfc2cc6);
         
     
-        var popup_e483a024f1955c14bc1a4a284f1e5e26 = L.popup({"maxWidth": "100%"});
+        var popup_e483a024f1955c14bc1a4a284f1e5e26 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_81df69fe036398bcf538fc657f57f40f = $(`<div id="html_81df69fe036398bcf538fc657f57f40f" style="width: 100.0%; height: 100.0%;">Βούλα — Bio (Saturday)<br><strong>Official hours (Bioagores): 08:00–14:00</strong><br>Location: Nireos Street, between Iras and Dios<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/σάββατο/βούλα/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -1145,7 +1176,7 @@
             marker_281fc62a331725164329359f716df90a.setIcon(icon_3953b41a80bc342988046a71b042172b);
         
     
-        var popup_a8c60f4382c9337283a674398d8d9b3c = L.popup({"maxWidth": "100%"});
+        var popup_a8c60f4382c9337283a674398d8d9b3c = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_b531f3ce3c3bbb99e30808ea1172f94f = $(`<div id="html_b531f3ce3c3bbb99e30808ea1172f94f" style="width: 100.0%; height: 100.0%;">Ελευσίνα — Bio (Saturday)<br><strong>Official hours (Bioagores): 08:00–14:00</strong><br>Location: Ioannou Agathou &amp; Dimitros, behind Elefsina Town Hall<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/σάββατο/ελευσίνα/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -1170,7 +1201,7 @@
             marker_e2f4dd186aa038592ca9ffc9e57483e0.setIcon(icon_85a0df1832bb9f7ea31ac6d23fe0d0bf);
         
     
-        var popup_b378b99e62d880de3746821c6e60a27f = L.popup({"maxWidth": "100%"});
+        var popup_b378b99e62d880de3746821c6e60a27f = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_1956b3444ce31b8fc1da796ebdf94564 = $(`<div id="html_1956b3444ce31b8fc1da796ebdf94564" style="width: 100.0%; height: 100.0%;">Ίλιον — Bio (Saturday)<br><strong>Official hours (Bioagores): 08:00–14:00</strong><br>Location: Dimokratias Avenue, Escape Center entrance to Antonis Tritsis Park<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/σάββατο/ίλιον/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -1195,7 +1226,7 @@
             marker_5a33868deee29f52401b58efdf0a5b13.setIcon(icon_9c1db3a546b237d5c04d267f76d0db09);
         
     
-        var popup_b8da7eed479539a1433b9537713bc2b8 = L.popup({"maxWidth": "100%"});
+        var popup_b8da7eed479539a1433b9537713bc2b8 = L.popup({"minWidth": 210, "maxWidth": 330, "autoPanPaddingTopLeft": [16, 170], "autoPanPaddingBottomRight": [16, 16]});
 
         
             var html_9f6c7f76dc173c214ca961da101b8705 = $(`<div id="html_9f6c7f76dc173c214ca961da101b8705" style="width: 100.0%; height: 100.0%;">Πόρτο Ράφτη — Bio (Sunday)<br><strong>Official hours (Bioagores): 09:00–14:00</strong><br>Location: Irakleous &amp; Mirrinountos<br><small>Map point from Bioagores embedded map (approximate centre); street description governs.</small><br><a href="https://www.bioagores.org/πρόγραμμα-αγορών/κυριακή/πόρτο-ράφτη/" target="_blank" rel="noopener">Bioagores — official market page ↗</a></div>`)[0];
@@ -1297,12 +1328,11 @@ document.getElementById("focus-kifisia").addEventListener("click",()=>{
  type.value="bio";day.value="Monday";
  type.dispatchEvent(new Event("change"));
  day.dispatchEvent(new Event("change"));
- // Folium's old maxWidth="100%" can produce an extremely tall, narrow popup.
- const popup=k.getPopup();
- popup.options.minWidth=Math.min(260,Math.max(190,window.innerWidth-100));
- popup.options.maxWidth=340;
  m.setView(k.getLatLng(),15,{animate:false});
  k.openPopup();
+});
+document.getElementById("reset-athens").addEventListener("click",()=>{
+ m.closePopup();m.setView([37.995,23.79],11,{animate:false});
 });
 document.getElementById("show-closed").addEventListener("change",repaint);
 repaint();
