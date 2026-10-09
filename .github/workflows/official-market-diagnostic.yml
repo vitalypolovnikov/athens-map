@@ -1,31 +1,29 @@
-name: Check official Attica market source
+name: Build official Attica market data
 on:
   push:
     branches:
       - revision/official-regular-market-inventory-2026-10-09
     paths:
-      - scripts/diagnose_official_markets.py
+      - scripts/build_regular_markets.py
       - .github/workflows/official-market-diagnostic.yml
   workflow_dispatch:
 permissions:
   contents: write
 jobs:
-  source-read:
+  snapshot:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Inspect official public pages
-        run: python scripts/diagnose_official_markets.py
-      - name: Preserve read-only inspection results in review branch
+      - name: Extract market coordinates and dates from authoritative source
+        run: python scripts/build_regular_markets.py
+      - name: Commit source snapshot on review branch
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/official_source_diagnostic.json
-          git diff --cached --quiet || git commit -m 'Record official site structural diagnostic'
+          git add data/attica_regular_markets_official.json
+          git diff --cached --quiet || git commit -m 'Snapshot official Attica regular markets'
           git push
