@@ -45,10 +45,12 @@
 #athens-tools{position:fixed;z-index:1001;top:12px;left:50%;transform:translateX(-50%);background:white;border-radius:12px;padding:10px 14px;box-shadow:0 2px 16px #0003;font:14px system-ui,sans-serif;max-width:calc(100vw - 30px);width:max-content}
 #athens-tools select,#athens-tools input{font:14px system-ui;margin:3px;padding:5px;border:1px solid #bbb;border-radius:5px}
 #athens-tools small{display:block;color:#555;padding:3px}
+#athens-tools .market-shortcut{font:inherit;font-weight:600;border:1px solid #a8c6dc;background:#edf7fe;color:#15527e;padding:4px 8px;border-radius:6px;cursor:pointer;margin-left:6px}
+#athens-tools .market-shortcut:focus-visible{outline:2px solid #15527e;outline-offset:2px}
 @media(max-width:600px){#athens-tools{top:9px;left:9px;transform:none;max-width:calc(100vw - 74px);font-size:12px;padding:6px}#athens-tools select,#athens-tools input{font-size:12px;max-width:120px}}
 </style>
 <div id="athens-tools" role="region" aria-label="Athens market filters">
-<strong>Athens Markets</strong> <small>Bioagores: 27 markets · Official Attica register: 264 geocoded listings (9 Oct 2026)</small>
+<strong>Athens Markets</strong> <button type="button" class="market-shortcut" id="focus-kifisia" title="Locate the Monday organic market on Kokkinara Street">📍 Kifisia · Kokkinara</button> <small>Bioagores: 27 markets · Official Attica register: 264 geocoded listings (9 Oct 2026)</small>
 <label>Type <select id="market-type"><option value="bio">Organic (Bio)</option><option value="all">All markets</option><option value="regular">Regular (official)</option></select></label>
 <label>Day <select id="market-day"><option value="all">Every day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
 <label><input type="checkbox" id="show-closed" checked> Include temporarily closed</label>
@@ -1288,6 +1290,22 @@ function repaint(){
 }
 type.addEventListener("change",repaint);
 day.addEventListener("change",repaint);
+document.getElementById("focus-kifisia").addEventListener("click",()=>{
+ const k=window["marker_37c418631785bebb222eab0981187987"];
+ if(!k)return;
+ // Bring the favourite Bio market into view even from Regular/day-filter modes.
+ type.value="bio";day.value="Monday";
+ type.dispatchEvent(new Event("change"));
+ day.dispatchEvent(new Event("change"));
+ m.setView(k.getLatLng(),15,{animate:false});
+ k.openPopup();
+ // Keep its popup below the filter panel on smaller screens.
+ const popup=k.getPopup().getElement(), panel=document.getElementById("athens-tools");
+ if(popup&&panel){
+   const overlap=panel.getBoundingClientRect().bottom-popup.getBoundingClientRect().top;
+   if(overlap>0)m.panBy([0,-(overlap+18)],{animate:false});
+ }
+});
 document.getElementById("show-closed").addEventListener("change",repaint);
 repaint();
 })();
