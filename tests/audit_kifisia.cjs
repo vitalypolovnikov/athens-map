@@ -49,9 +49,9 @@ const fs=require('node:fs');
   assert.equal(shortcut.inViewport,true);
   assert.equal(shortcut.isOpen,true);
   assert.equal(shortcut.type,'bio');assert.equal(shortcut.day,'Monday');
+  console.log(JSON.stringify({shortcut:vp.name,details:shortcut}));
   assert(shortcut.popupTop>=shortcut.panelBottom-2,'Popup obscured by controls');
   assert.equal(errors.length,0);
-  console.log(JSON.stringify({shortcut:vp.name,details:shortcut}));
   console.log(JSON.stringify({viewport:vp.name,kifisia:first,afterMonday:after,jsErrors:errors}));
   await page.close();
  }
