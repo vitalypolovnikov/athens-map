@@ -67,6 +67,11 @@
 #athens-tools .favorites-item .fav-remove{padding:4px 6px;background:transparent;border:0;font-size:16px;color:#ad792a}
 #athens-tools .favorites-hint{font-size:10px;color:#74808c;padding:5px 2px 1px}
 #athens-tools .favorites-empty{font-size:12px;color:#697989;padding:7px}
+#athens-tools .cloud-controls{margin-top:7px;padding-top:7px;border-top:1px solid #e6ecf2;display:flex;flex-direction:column;align-items:flex-start;gap:5px;font-size:11px;color:#52677b}
+#athens-tools .cloud-controls button{white-space:normal;font-size:11px;text-align:left;max-width:100%}
+#athens-tools #cloud-login-form:not([hidden]){display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+#athens-tools #cloud-email{font:12px system-ui;width:min(190px,100%);padding:5px;border:1px solid #cbd5df;border-radius:5px}
+#athens-tools .cloud-controls [hidden]{display:none!important}
 .market-popup .fav-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .market-popup .fav-title-row .name{flex:1;min-width:0}
 .market-popup .fav-star{font:23px/1 system-ui,-apple-system,sans-serif;color:#ad792a;min-width:30px;min-height:29px;flex-shrink:0;border:1px solid #e1e6ea;border-radius:7px;background:#fbfcfd;cursor:pointer;padding:0 3px}
@@ -103,7 +108,18 @@
 }
 </style>
 <div id="athens-tools" role="region" aria-label="Athens market filters">
-<div class="head"><strong>Athens Markets</strong><details class="favorites-dropdown" id="favorites-menu"><summary>★ Favorites <span id="favorites-count"></span></summary><div class="favorites-panel"><div id="favorites-items"></div><div class="favorites-hint" id="favorites-hint">Saved in this browser only.</div></div></details><button type="button" id="reset-athens">⌖ Athens</button></div>
+<div class="head"><strong>Athens Markets</strong><details class="favorites-dropdown" id="favorites-menu"><summary>★ Favorites <span id="favorites-count"></span></summary><div class="favorites-panel"><div id="favorites-items"></div><div class="favorites-hint" id="favorites-hint">Saved in this browser only.</div>
+<div class="cloud-controls">
+ <div id="cloud-status" role="status">Local favorites · sync not connected</div>
+ <button type="button" id="cloud-open-login">Enable cloud sync</button>
+ <form id="cloud-login-form" hidden>
+  <label for="cloud-email">Email</label>
+  <input type="email" id="cloud-email" autocomplete="email" placeholder="you@example.com" required>
+  <button type="submit" id="cloud-send-link">Send sign-in link</button>
+ </form>
+ <button type="button" id="cloud-import-local" hidden>Merge this device's favorites</button>
+ <button type="button" id="cloud-signout" hidden>Sign out</button>
+</div></div></details><button type="button" id="reset-athens">⌖ Athens</button></div>
 <div class="filters">
 <label>Type <select id="market-type"><option value="bio">Organic (Bio)</option><option value="all">All markets</option><option value="regular">Regular (official)</option></select></label>
 <label>Day <select id="market-day"><option value="all">Every day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select></label>
@@ -1482,11 +1498,13 @@ function drawStars(){
   button.title=chosen?"Remove from Favorites":"Add to Favorites";
  });
 }
+let onLocalChange=null;
 function toggleFavorite(id){
  if(!registry.has(id))return;
  favorites=favorites.includes(id)?favorites.filter(x=>x!==id):[...favorites,id];
  save();
  renderFavorites();
+ if(onLocalChange)onLocalChange(id,favorites.includes(id));
 }
 function goToMarket(info){
  if(!isScheduled(info))return;
@@ -1529,7 +1547,7 @@ function renderFavorites(){
    item.append(go,remove);list.append(item);
   }
  }
- hint.textContent=canSave?"Saved in this browser only.":"Storage unavailable; changes last only until this page is closed.";
+ hint.textContent=canSave?(window.athensCloudLinked?"Synced when online.":"Saved in this browser only."):"Storage unavailable; changes last only until this page is closed.";
  drawStars();
 }
 function addPopupStar(marker){
@@ -1570,6 +1588,18 @@ document.addEventListener("pointerdown",event=>{
  if(menu.open&&!menu.contains(event.target))menu.open=false;
 });
 renderFavorites();
+window.athensFavoritesBridge={
+ getSelected:()=>favorites.slice(),
+ listKnown:()=>Array.from(registry.keys()),
+ applyCloud:keys=>{
+  favorites=[...new Set(keys.filter(key=>registry.has(key)))];
+  save();
+  renderFavorites();
+ },
+ onLocalChange:callback=>{onLocalChange=callback}
+};
 })();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./cloud-sync.js"></script>
 </html>
