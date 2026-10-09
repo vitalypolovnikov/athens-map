@@ -2,7 +2,7 @@
 
 ## Deployment hold
 
-**Not live yet.** This is review branch `feature/supabase-cloud-favorites-2026-10-09` / PR #6. Do not merge before the owner configures Supabase Auth redirect URLs and successfully tests a REAL magic-link sign-in against the production map address.
+**Controlled opt-in pilot.** Release PR #6 only after existing map and simulated cloud regression tests pass and the owner has configured both Supabase Auth URLs. The live site remains usable with local Favorites without account creation. The first genuine Magic Link and Mac↔iPhone round-trip require a real-user test *after* deployment on the authorized production URL; do **not** declare full cross-device synchronization verified before that test.
 
 ## Supabase backend
 
@@ -40,16 +40,16 @@ In Supabase Dashboard → Project **Athens Markets** → Authentication → URL 
 - **Site URL**: `https://vitalypolovnikov.github.io/athens-map/`
 - **Redirect URLs**: add exactly `https://vitalypolovnikov.github.io/athens-map/` as allowed return URL.
 
-The GitHub Pages app sends `emailRedirectTo` to this exact page. These settings are not exposed by the currently available connected management actions and must be entered by the project owner.
+The owner supplied a screenshot confirming the exact Site URL and the identical allow-listed Redirect URL. The site sends `emailRedirectTo` to this page; this configuration is a prerequisite for live email sign-in.
 
 **Email caveat:** Supabase's built-in SMTP sends only to the organization's own team member email addresses (and currently only 2 messages/hour). To use another email address or broader public sign-up, configure custom SMTP first. Supabase Free plans may pause low-activity projects, affecting availability.
 
 ## Release gates
 
-1. Dashboard URL Configuration confirmed by owner.
-2. Sign in on real device using organization email and verify the magic link lands in the Athens Markets app.
-3. Test moving cloud favorite from phone to Mac and removal in opposite direction.
-4. Recheck RLS and security advisors; validate no private/secret API keys in site; GitHub Actions PASS.
-5. Merge reviewed PR #6, verify GitHub Pages successful deployment, recheck live app in production.
+1. Dashboard Site/Redirect URL screenshots confirmed by owner.
+2. RLS/security advisors clean; repository uses public publishable key only; all browser QA passes.
+3. Deploy this opt-in pilot to the already authorized production URL, verify GitHub Pages successful deployment.
+4. Sign in with the project-owner/team email on Mac, complete Magic Link, confirm account and cloud rows appear.
+5. Sign into the same email on iPhone; confirm addition and removal propagate in both directions. Only then declare sync fully proven.
 
 Rollback: revert PR #6; existing local-only Favorites remain in previous GitHub Pages release.
