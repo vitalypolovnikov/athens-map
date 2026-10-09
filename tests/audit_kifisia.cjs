@@ -17,8 +17,9 @@ const fs=require('node:fs');
   await page.waitForFunction(()=>document.querySelector('#market-count')?.textContent.includes('Bio'));
   const first=await page.evaluate((id)=>{
    const map=window.map_602b3e032ea0b867c861696733b322fa,m=window['marker_'+id];
-   const p=m.getLatLng();return {inMap:map.hasLayer(m),withinInitialViewport:map.getBounds().contains(p),popup:m.getPopup().getContent(),point:[p.lat,p.lng],bounds:{north:map.getBounds().getNorth(),south:map.getBounds().getSouth(),east:map.getBounds().getEast(),west:map.getBounds().getWest()},count:document.getElementById('market-count').textContent};
+   const p=m.getLatLng();return {inMap:map.hasLayer(m),withinInitialViewport:map.getBounds().contains(p),popup:(typeof m.getPopup().getContent()==='string'?m.getPopup().getContent():m.getPopup().getContent()?.outerHTML||String(m.getPopup().getContent())),point:[p.lat,p.lng],bounds:{north:map.getBounds().getNorth(),south:map.getBounds().getSouth(),east:map.getBounds().getEast(),west:map.getBounds().getWest()},count:document.getElementById('market-count').textContent};
   },id);
+  console.log(JSON.stringify({debug:vp.name,details:first}));
   assert.equal(first.inMap,true);assert(first.popup.includes('Kokkinara'));
   assert.deepEqual(first.point,[38.0813534,23.8307477]);
   await page.locator('#market-day').selectOption('Monday');
