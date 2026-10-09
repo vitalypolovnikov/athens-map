@@ -60,8 +60,9 @@ const suite=async()=>{
    // Exhaustive Bio card opening: all 27 including temporarily closed, not just the favourite.
    const allBio=await page.evaluate(()=>{
      const map=window.map_602b3e032ea0b867c861696733b322fa,res=[],errors=[];
-     map.eachLayer(layer=>{
-       if(!(layer instanceof L.Marker)||!layer.getPopup)return;
+     const candidates=[];map.eachLayer(layer=>{if(layer instanceof L.Marker&&layer.getPopup)candidates.push(layer)});
+     for(const layer of candidates){
+       if(!(layer instanceof L.Marker)||!layer.getPopup)continue;
        const p=layer.getPopup(),content=p?.getContent();
        if(!content?.classList?.contains('market-popup')||!content.classList.contains('bio'))return;
        // Geometry QA: avoid hundreds of tile fetches while still actually mounting the popup DOM.
@@ -74,7 +75,7 @@ const suite=async()=>{
        if(!link)errors.push({missingSource:content.textContent.slice(0,60)});
        res.push({name:content.querySelector('.name')?.textContent,closed:!!content.querySelector('.closed'),width:rect.width,height:rect.height});
        layer.closePopup();
-     });
+     }
      return {results:res,errors};
    });
    assert.equal(allBio.results.length,27,'All 27 Bio popups must be opened and rendered');
@@ -85,8 +86,9 @@ const suite=async()=>{
    await page.waitForTimeout(100);
    const allRegular=await page.evaluate(()=>{
       const map=window.map_602b3e032ea0b867c861696733b322fa,res=[],errors=[];
-      map.eachLayer(l=>{
-        if(!(l instanceof L.CircleMarker)||!l.getPopup)return;
+      const candidates=[];map.eachLayer(l=>{if(l instanceof L.CircleMarker&&l.getPopup)candidates.push(l)});
+      for(const l of candidates){
+        if(!(l instanceof L.CircleMarker)||!l.getPopup)continue;
         const p=l.getPopup(),html=p?.getContent();
         if(typeof html!=='string'||!html.includes("market-popup regular"))return;
         p.options.autoPan=false;
@@ -97,7 +99,7 @@ const suite=async()=>{
         if(box.width<195||box.height>290||!card.querySelector('details')||!card.querySelector('a[href*="foreaslaikon.gov.gr"]'))
           errors.push({i:res.length,width:box.width,height:box.height,text:card.textContent.slice(0,90)});
         res.push(box.width);l.closePopup();
-      });
+      }
       return {checked:res.length,errors};
    });
    assert(allRegular.checked>=240&&allRegular.checked<=264,'Not all visible regular markers were checked '+allRegular.checked);
