@@ -50,6 +50,19 @@ const fs=require('node:fs');
   assert.equal(shortcut.isOpen,true);
   assert.equal(shortcut.type,'bio');assert.equal(shortcut.day,'Monday');
   console.log(JSON.stringify({shortcut:vp.name,details:shortcut}));
+  const motion=await page.evaluate(id=>{
+    const map=window.map_602b3e032ea0b867c861696733b322fa, marker=window['marker_'+id];
+    const pos=()=>{
+      const popup=marker.getPopup().getElement().getBoundingClientRect();
+      const icon=marker._icon.getBoundingClientRect();
+      return {popup:{top:popup.top,height:popup.height,bottom:popup.bottom},icon:{top:icon.top,height:icon.height},center:map.getCenter()};
+    };
+    const before=pos();
+    map.panBy([0,180],{animate:false});
+    const after=pos();
+    return {before,after};
+  },id);
+  console.log(JSON.stringify({motion:vp.name,details:motion}));
   assert(shortcut.popupTop>=shortcut.panelBottom-2,'Popup obscured by controls');
   assert.equal(errors.length,0);
   console.log(JSON.stringify({viewport:vp.name,kifisia:first,afterMonday:after,jsErrors:errors}));
