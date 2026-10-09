@@ -94,7 +94,7 @@
 #athens-tools .head{gap:4px 6px}
 #athens-tools .head strong{font-size:14px}
 #athens-tools .favorites-dropdown>summary{padding:4px 6px;font-size:11px}
-#athens-tools .favorites-panel{right:0;max-width:calc(100vw - 69px);min-width:210px}
+#athens-tools .favorites-panel{position:fixed;left:56px;right:8px;top:var(--favorites-top,200px);max-width:none;min-width:0;width:auto;max-height:45vh}
 #athens-tools button{font-size:11px;padding:4px 6px}
 #athens-tools .filters{gap:4px 6px}
 #athens-tools select{max-width:110px;font-size:12px}
@@ -1558,6 +1558,14 @@ function addPopupStar(marker){
  drawStars();
 }
 map.on("popupopen",event=>addPopupStar(event.popup._source));
+function positionMobileMenu(){
+ if(window.innerWidth<=600){
+  const toolbar=document.getElementById("athens-tools").getBoundingClientRect();
+  menu.style.setProperty("--favorites-top",Math.ceil(toolbar.bottom+6)+"px");
+ }
+}
+menu.addEventListener("toggle",()=>{if(menu.open)positionMobileMenu()});
+window.addEventListener("resize",()=>{if(menu.open)positionMobileMenu()});
 document.addEventListener("pointerdown",event=>{
  if(menu.open&&!menu.contains(event.target))menu.open=false;
 });
