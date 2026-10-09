@@ -53,6 +53,8 @@ const suite=async()=>{
    await page.locator('.leaflet-popup-content details summary').click();
    assert.equal(await page.locator('.leaflet-popup-content details').getAttribute('open'),'');
    assert((await page.locator('.leaflet-popup-content a[href*="bioagores.org"]').count())>0);
+   // Restore the compact collapsed state after testing deliberate user expansion.
+   await page.locator('.leaflet-popup-content details summary').click();
    await page.locator('#reset-athens').click();
    const reset=await page.evaluate(()=>({zoom:window.map_602b3e032ea0b867c861696733b322fa.getZoom(),center:window.map_602b3e032ea0b867c861696733b322fa.getCenter(),kifisiaPopupOpen:window['marker_37c418631785bebb222eab0981187987'].isPopupOpen()}));
    assert.equal(reset.zoom,11);
