@@ -1,0 +1,210 @@
+{
+  "utc": "2026-10-09T10:19:56.220863+00:00",
+  "days": [
+    {
+      "day": "Δευτέρα",
+      "url": "https://www.foreaslaikon.gov.gr/markets-map/?county=&cpage=1&day=%CE%94%CE%B5%CF%85%CF%84%CE%AD%CF%81%CE%B1&view=list&region=&municipality=&type=&order_by=place",
+      "status": 200,
+      "length": 191697,
+      "counts": [
+        "Βρέθηκαν 42 λαϊκές"
+      ],
+      "terms": {
+        "Περιοχή:": 37,
+        "Οδός": 42,
+        "Μόνιμη": 21,
+        "latitude": 0,
+        "longitude": 0,
+        "google.maps": 0,
+        "L.marker": 0,
+        "wp-json": 6,
+        "geojson": 0
+      },
+      "script_sources": [
+        "https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"
+      ],
+      "coord_samples": [],
+      "links": [
+        "pe=&day=Δευτέρα&start=&end=&order=&order_by=place&view=map&cpage=1\"><i class=\"fas fa-list\" data-view=\"map\"></i> Χάρτης</a>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t",
+        "art=&end=&order=&order_by=place&area=Αγία Βαρβάρα&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "t=&end=&order=&order_by=place&area=Αγία Παρασκευή&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "tart=&end=&order=&order_by=place&area=Άνω Πατήσια&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t"
+      ]
+    },
+    {
+      "day": "Τρίτη",
+      "url": "https://www.foreaslaikon.gov.gr/markets-map/?county=&cpage=1&day=%CE%A4%CF%81%CE%AF%CF%84%CE%B7&view=list&region=&municipality=&type=&order_by=place",
+      "status": 200,
+      "length": 197809,
+      "counts": [
+        "Βρέθηκαν 49 λαϊκές"
+      ],
+      "terms": {
+        "Περιοχή:": 45,
+        "Οδός": 49,
+        "Μόνιμη": 28,
+        "latitude": 0,
+        "longitude": 0,
+        "google.maps": 0,
+        "L.marker": 0,
+        "wp-json": 6,
+        "geojson": 0
+      },
+      "script_sources": [
+        "https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"
+      ],
+      "coord_samples": [],
+      "links": [
+        "type=&day=Τρίτη&start=&end=&order=&order_by=place&view=map&cpage=1\"><i class=\"fas fa-list\" data-view=\"map\"></i> Χάρτης</a>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t",
+        "start=&end=&order=&order_by=place&area=Κοντόπευκο&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "=&end=&order=&order_by=place&area=Νέα Φιλαδέλφεια&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "tart=&end=&order=&order_by=place&area=Αμπελόκηποι&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t"
+      ]
+    },
+    {
+      "day": "Τετάρτη",
+      "url": "https://www.foreaslaikon.gov.gr/markets-map/?county=&cpage=1&day=%CE%A4%CE%B5%CF%84%CE%AC%CF%81%CF%84%CE%B7&view=list&region=&municipality=&type=&order_by=place",
+      "status": 200,
+      "length": 192843,
+      "counts": [
+        "Βρέθηκαν 44 λαϊκές"
+      ],
+      "terms": {
+        "Περιοχή:": 39,
+        "Οδός": 44,
+        "Μόνιμη": 27,
+        "latitude": 0,
+        "longitude": 0,
+        "google.maps": 0,
+        "L.marker": 0,
+        "wp-json": 6,
+        "geojson": 0
+      },
+      "script_sources": [
+        "https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"
+      ],
+      "coord_samples": [],
+      "links": [
+        "pe=&day=Τετάρτη&start=&end=&order=&order_by=place&view=map&cpage=1\"><i class=\"fas fa-list\" data-view=\"map\"></i> Χάρτης</a>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t",
+        "=&end=&order=&order_by=place&area=Άγιος Δημήτριος&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "τη&start=&end=&order=&order_by=place&area=Τσούμπα&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "d=&order=&order_by=place&area=Άγιος Παντελεήμονας&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t"
+      ]
+    },
+    {
+      "day": "Πέμπτη",
+      "url": "https://www.foreaslaikon.gov.gr/markets-map/?county=&cpage=1&day=%CE%A0%CE%AD%CE%BC%CF%80%CF%84%CE%B7&view=list&region=&municipality=&type=&order_by=place",
+      "status": 200,
+      "length": 190449,
+      "counts": [
+        "Βρέθηκαν 39 λαϊκές"
+      ],
+      "terms": {
+        "Περιοχή:": 36,
+        "Οδός": 39,
+        "Μόνιμη": 14,
+        "latitude": 0,
+        "longitude": 0,
+        "google.maps": 0,
+        "L.marker": 0,
+        "wp-json": 6,
+        "geojson": 0
+      },
+      "script_sources": [
+        "https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"
+      ],
+      "coord_samples": [],
+      "links": [
+        "ype=&day=Πέμπτη&start=&end=&order=&order_by=place&view=map&cpage=1\"><i class=\"fas fa-list\" data-view=\"map\"></i> Χάρτης</a>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t",
+        "&end=&order=&order_by=place&area=Άνω Αγία Βαρβάρα&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "&end=&order=&order_by=place&area=Άγιος Ελευθέριος&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "t=&end=&order=&order_by=place&area=Άγιος Νικόλαος&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t"
+      ]
+    },
+    {
+      "day": "Παρασκευή",
+      "url": "https://www.foreaslaikon.gov.gr/markets-map/?county=&cpage=1&day=%CE%A0%CE%B1%CF%81%CE%B1%CF%83%CE%BA%CE%B5%CF%85%CE%AE&view=list&region=&municipality=&type=&order_by=place",
+      "status": 200,
+      "length": 195585,
+      "counts": [
+        "Βρέθηκαν 47 λαϊκές"
+      ],
+      "terms": {
+        "Περιοχή:": 41,
+        "Οδός": 47,
+        "Μόνιμη": 24,
+        "latitude": 0,
+        "longitude": 0,
+        "google.maps": 0,
+        "L.marker": 0,
+        "wp-json": 6,
+        "geojson": 0
+      },
+      "script_sources": [
+        "https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"
+      ],
+      "coord_samples": [],
+      "links": [
+        "=&day=Παρασκευή&start=&end=&order=&order_by=place&view=map&cpage=1\"><i class=\"fas fa-list\" data-view=\"map\"></i> Χάρτης</a>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t",
+        "t=&end=&order=&order_by=place&area=Agia Paraskevi&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "order=&order_by=place&area=Ασύρματος (Μπραχαμίου)&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "&start=&end=&order=&order_by=place&area=Ηλιούπολη&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t"
+      ]
+    },
+    {
+      "day": "Σάββατο",
+      "url": "https://www.foreaslaikon.gov.gr/markets-map/?county=&cpage=1&day=%CE%A3%CE%AC%CE%B2%CE%B2%CE%B1%CF%84%CE%BF&view=list&region=&municipality=&type=&order_by=place",
+      "status": 200,
+      "length": 194041,
+      "counts": [
+        "Βρέθηκαν 43 λαϊκές"
+      ],
+      "terms": {
+        "Περιοχή:": 38,
+        "Οδός": 43,
+        "Μόνιμη": 22,
+        "latitude": 0,
+        "longitude": 0,
+        "google.maps": 0,
+        "L.marker": 0,
+        "wp-json": 6,
+        "geojson": 0
+      },
+      "script_sources": [
+        "https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"
+      ],
+      "coord_samples": [],
+      "links": [
+        "pe=&day=Σάββατο&start=&end=&order=&order_by=place&view=map&cpage=1\"><i class=\"fas fa-list\" data-view=\"map\"></i> Χάρτης</a>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t",
+        "tart=&end=&order=&order_by=place&area=Μυκονιάτικα&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "ατο&start=&end=&order=&order_by=place&area=Νησίδα&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t",
+        "d=&order=&order_by=place&area=Άγιος Παντελεήμονας&view=map&cpage=1\"><i class=\"fa fa-map-marker\"></i></a>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t\t\t\t\t\t\t"
+      ]
+    },
+    {
+      "day": "Κυριακή",
+      "url": "https://www.foreaslaikon.gov.gr/markets-map/?county=&cpage=1&day=%CE%9A%CF%85%CF%81%CE%B9%CE%B1%CE%BA%CE%AE&view=list&region=&municipality=&type=&order_by=place",
+      "status": 200,
+      "length": 153450,
+      "counts": [],
+      "terms": {
+        "Περιοχή:": 0,
+        "Οδός": 0,
+        "Μόνιμη": 0,
+        "latitude": 0,
+        "longitude": 0,
+        "google.maps": 0,
+        "L.marker": 0,
+        "wp-json": 6,
+        "geojson": 0
+      },
+      "script_sources": [
+        "https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"
+      ],
+      "coord_samples": [],
+      "links": [
+        "pe=&day=Κυριακή&start=&end=&order=&order_by=place&view=map&cpage=1\"><i class=\"fas fa-list\" data-view=\"map\"></i> Χάρτης</a>\n\t\t\t\t\t\t</button>\n\t\t\t\t\t\t\n\t\t\t\t\t</div>\n\t\t"
+      ]
+    }
+  ]
+}
