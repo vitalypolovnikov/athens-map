@@ -57,6 +57,8 @@ const suite=async()=>{
    const reset=await page.evaluate(()=>({zoom:window.map_602b3e032ea0b867c861696733b322fa.getZoom(),center:window.map_602b3e032ea0b867c861696733b322fa.getCenter(),kifisiaPopupOpen:window['marker_37c418631785bebb222eab0981187987'].isPopupOpen()}));
    assert.equal(reset.zoom,11);
    assert.equal(reset.kifisiaPopupOpen,false);
+   // The shortcut selects Monday. Restore all weekdays for the full audit.
+   await page.locator('#market-day').selectOption('all');
    // Exhaustive Bio card opening: all 27 including temporarily closed, not just the favourite.
    const allBio=await page.evaluate(()=>{
      const map=window.map_602b3e032ea0b867c861696733b322fa,res=[],errors=[];
